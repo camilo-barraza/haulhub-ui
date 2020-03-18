@@ -7,7 +7,7 @@ import { closeTicketsPanel } from "../store/actions";
 const Wrapper = styled.div`
   right:0;
   top:0;
-  width: 318px;
+  width: 326px;
   position:fixed;
   overflow-y:auto;
   padding:12px;
