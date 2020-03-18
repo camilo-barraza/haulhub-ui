@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Spinner from "../common/spinner";
-import TicketDetail from "../ticket_detail";
+import TicketPanel from "../tickets/ticket_panel";
 
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
@@ -382,9 +382,9 @@ const Row = (props) => {
   };
 
   return (<div>
-    <TicketDetail isOpen={isTicketDetailOpen} setIsOpen={setIsTicketDetailOpen} >
+    {/* <TicketPanel isOpen={isTicketDetailOpen} setIsOpen={setIsTicketDetailOpen} >
       <div className="d-flex align-items-center justify-content-center mt-5">{props.line}</div>
-    </TicketDetail>
+    </TicketPanel> */}
     <TableRow onClick={showTicketDetail} isLast={props.isLast} className="d-flex">
       <TableSection height={props.height} width={tableColumnWidths[0].sectionWidth}>
         <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}> {props.line} </TableColumn>
@@ -424,6 +424,9 @@ const ReconciliationTable = () => {
 
   return (<Container>
     <Headers>
+      <TicketPanel isOpen={true} >
+        
+      </TicketPanel>
       <TableSection width={tableColumnWidths[0].sectionWidth}>
         <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
         <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[1]}> Item </TableColumnHeader>
