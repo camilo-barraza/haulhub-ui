@@ -45,7 +45,7 @@ export const loadTickets = (itemId) => {
   };
 };
 
-export const openTicketsPanel = (payload) => {
+export const openTicketsPanel = () => {
   return async dispatch => {
     dispatch({
       type: OPEN_TICKETS_PANEL
@@ -53,7 +53,7 @@ export const openTicketsPanel = (payload) => {
   };
 };
 
-export const closeTicketsPanel = (payload) => {
+export const closeTicketsPanel = () => {
   return async dispatch => {
     dispatch({
       type: CLOSE_TICKETS_PANEL

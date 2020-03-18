@@ -76,7 +76,6 @@ const ticketsPanelReducer = (state = initState, action) => {
   }
 };
 
-
 const rootReducer = (state = {}, action) => {
   return {
     ticketsPanel: ticketsPanelReducer(state.ticketsPanel, action),

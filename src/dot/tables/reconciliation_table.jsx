@@ -428,44 +428,43 @@ const Row = connect(state => ({
   });
 
 
-const ReconciliationTable = ( { isTicketsPanelOpen } ) => {
-  const getData = async () => {
-    // simulate network
-    await sleep(1000);
-    return mockData;
-  };
-
-  return (<Container>
-    <Headers>
-      <TicketPanel isOpen={isTicketsPanelOpen} />
-      <TableSection width={tableColumnWidths[0].sectionWidth}>
-        <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
-        <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[1]}> Item </TableColumnHeader>
-        <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[2]}> Description </TableColumnHeader>
-        <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[3]}> Bid Quantity </TableColumnHeader>
-        <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[4]}> Unit </TableColumnHeader>
-      </TableSection>
-      <TableSection className="d-flex flex-column align-items-center justify-content-center" width={tableColumnWidths[1].sectionWidth}>
-        <SectionHeader className="d-flex align-items-center justify-content-center"> Work Completed </SectionHeader>
-        <SectionSubheaders>
-          <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[0]}> Previous Period </TableColumnHeader>
-          <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[1]}> This Period </TableColumnHeader>
-        </SectionSubheaders>
-      </TableSection>
-      <TableSection borderless width={tableColumnWidths[2].subSectionWidths[0]}>
-        <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[0]}> 
-          <div className="text-center" style={{width:"90px"}}> Total Completed Stored to Date </div> 
-        </TableColumnHeader>
-        <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[1]}> % Complete </TableColumnHeader>
-        <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[2]}> 
-          <div style={{width:"60px"}}> Balance to Finish </div> 
-        </TableColumnHeader>
-      </TableSection>
-    </Headers>
-    <Rows getData={getData} totalPages={3} RowLayout={Row}/>
-  </Container>);
-}; 
-
 export default connect( state => ({ 
   isTicketsPanelOpen: state.ticketsPanel.isOpen 
-} ))(ReconciliationTable);
+} ))(
+  ({ isTicketsPanelOpen }) => {
+    const getData = async () => {
+      // simulate network
+      await sleep(1000);
+      return mockData;
+    };
+
+    return (<Container>
+      <Headers>
+        <TicketPanel isOpen={isTicketsPanelOpen} />
+        <TableSection width={tableColumnWidths[0].sectionWidth}>
+          <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
+          <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[1]}> Item </TableColumnHeader>
+          <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[2]}> Description </TableColumnHeader>
+          <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[3]}> Bid Quantity </TableColumnHeader>
+          <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[4]}> Unit </TableColumnHeader>
+        </TableSection>
+        <TableSection className="d-flex flex-column align-items-center justify-content-center" width={tableColumnWidths[1].sectionWidth}>
+          <SectionHeader className="d-flex align-items-center justify-content-center"> Work Completed </SectionHeader>
+          <SectionSubheaders>
+            <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[0]}> Previous Period </TableColumnHeader>
+            <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[1]}> This Period </TableColumnHeader>
+          </SectionSubheaders>
+        </TableSection>
+        <TableSection borderless width={tableColumnWidths[2].subSectionWidths[0]}>
+          <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
+            <div className="text-center" style={{ width: "90px" }}> Total Completed Stored to Date </div>
+          </TableColumnHeader>
+          <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[1]}> % Complete </TableColumnHeader>
+          <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[2]}>
+            <div style={{ width: "60px" }}> Balance to Finish </div>
+          </TableColumnHeader>
+        </TableSection>
+      </Headers>
+      <Rows getData={getData} totalPages={3} RowLayout={Row} />
+    </Container>);
+  });
