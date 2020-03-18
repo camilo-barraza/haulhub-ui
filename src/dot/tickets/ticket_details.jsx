@@ -11,11 +11,11 @@ const tickets = [
     material: "18.29 Tons  12.MMSP"
   },
   {
-    number:"64058703",
-    time:"2018-08-29 11:10:46.526069",
-    accepted: false,
+    number: "64058703",
+    time: "2018-08-29 11:10:46.526069",
+    accepted: true,
     truck: "EZ742",
-    material:"18.29 Tons  12.MMSP"
+    material: "18.29 Tons  12.MMSP"
   }
 ];
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import TicketDetails from "./ticket_details";
 
@@ -16,6 +16,24 @@ const Wrapper = styled.div`
   background-color: #F6F7FC ;
   z-index:1000;
   border-left: 1px solid #EFEEF2;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: white;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #DAD5DE;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #DCDFE6;
+    border-radius: 2px;
+  } 
 `;
 
 const Backdrop = styled.div`
