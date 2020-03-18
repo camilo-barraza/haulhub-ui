@@ -1,30 +1,32 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import moment from "moment";
+import Spinner from "../common/spinner";
 
-const tickets = [
-  {
-    number: "64058703",
-    time: "2018-08-29 11:10:46.526069",
-    accepted: true,
-    truck: "EZ742",
-    material: "18.29 Tons  12.MMSP"
-  },
-  {
-    number: "64058703",
-    time: "2018-08-29 11:10:46.526069",
-    accepted: false,
-    truck: "EZ742",
-    material: "18.29 Tons  12.MMSP"
-  },
-  {
-    number: "64058703",
-    time: "2018-08-29 11:10:46.526069",
-    accepted: true,
-    truck: "EZ742",
-    material: "18.29 Tons  12.MMSP"
-  }
-];
+// const tickets = [
+//   {
+//     number: "64058703",
+//     time: "2018-08-29 11:10:46.526069",
+//     accepted: true,
+//     truck: "EZ742",
+//     material: "18.29 Tons  12.MMSP"
+//   },
+//   {
+//     number: "64058703",
+//     time: "2018-08-29 11:10:46.526069",
+//     accepted: false,
+//     truck: "EZ742",
+//     material: "18.29 Tons  12.MMSP"
+//   },
+//   {
+//     number: "64058703",
+//     time: "2018-08-29 11:10:46.526069",
+//     accepted: true,
+//     truck: "EZ742",
+//     material: "18.29 Tons  12.MMSP"
+//   }
+// ];
 
 const CardWrapper = styled.div`
   height:110px;
@@ -99,7 +101,8 @@ const StatusIcon = ({ icon, iconBackgroundColor, iconColor, backgroundColor }) =
   </IconContainer>);
 };
 
-const TicketCard = ( { number, time, accepted, truck, material }) => {
+
+const TicketCard =  ( { number, time, accepted, truck, material }) => {
   return (<CardWrapper className='mt-3 d-flex flex-wrap align-items-center'>
     <div className='d-flex'>
       <Field isFirst withoutMargin>
@@ -148,16 +151,23 @@ const Header = styled.div`
   margin-top: 28px;
 `;
 
-const TicketDetails = () => {
-  return (<div className="w-100">
-    <Header> 
-      <i className='mr-2 fa fa-bookmark'></i>
+const TicketDetails = connect(state => ({ 
+  data: state.ticketsPanel.data
+}))(
+  ( { data: { loading, tickets } } ) => {
+    console.log(loading, tickets);
+    return (<div className="w-100">
+      <Header> 
+        <i className='mr-2 fa fa-bookmark'></i>
       Tickets 
-    </Header>
-    {tickets.map((ticket, index) => (<div key={index}>
-      <TicketCard {...ticket} />
-    </div>))}
-  </div>);
-}; 
+      </Header>
+      {loading && <div className='d-flex align-items-center justify-content-center mt-5'>
+        <Spinner/>
+      </div>}
+      {tickets.map((ticket, index) => (<div key={index}>
+        <TicketCard {...ticket} />
+      </div>))}
+    </div>);
+  }); 
 
 export default TicketDetails;

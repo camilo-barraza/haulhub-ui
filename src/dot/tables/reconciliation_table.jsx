@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Spinner from "../common/spinner";
+import { connect } from "react-redux";
 import TicketPanel from "../tickets/ticket_panel";
+import { openTicketsPanel, loadTickets } from "../store/actions";
 
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
@@ -374,49 +376,59 @@ const tableColumnWidths = [{
 }];
 
 
-const Row = (props) => {
-  const [isTicketDetailOpen, setIsTicketDetailOpen] = useState();
+const Row = connect(state => ({
+  isTicketDetailOpen: state.ticketsPanel.isOpen
+}), { 
+  openTicketsPanel,
+  loadTickets
+}) (
+  (props) => {
+    const [rowIsSelected, setRowIsSelected] = useState();
 
-  const showTicketDetail = () => {
-    setIsTicketDetailOpen(true);
-    console.log(` colo clicked row ${props.line}`);
-  };
+    useEffect(() => {
+      if (!props.isTicketDetailOpen)
+        setRowIsSelected(false);
+    }, [props.isTicketDetailOpen]);
 
-  return (<div>
-    <TicketPanel isOpen={isTicketDetailOpen} setIsOpen={setIsTicketDetailOpen} >
-      <div className="d-flex align-items-center justify-content-center mt-5">{props.line}</div>
-    </TicketPanel>
-    <TableRow isSelected={isTicketDetailOpen} onClick={showTicketDetail} isLast={props.isLast} className="d-flex">
-      <TableSection height={props.height} width={tableColumnWidths[0].sectionWidth}>
-        <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}> {props.line} </TableColumn>
-        <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}> {props.item} </TableColumn>
-        <TableColumn width={tableColumnWidths[0].subSectionWidths[2]}>
-          <RowDescription title={props.description}> {props.description} </RowDescription>
-        </TableColumn>
-        <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[3]}> {numberWithCommas(props.bidQuantity)} </TableColumn>
-        <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[4]}> {props.unit} </TableColumn>
-      </TableSection>
-      <TableSection height={props.height} width={tableColumnWidths[1].sectionWidth}>
-        <TableColumn align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
-          {numberWithCommas(props.previousPeriod)} <i className="fa fa-bookmark ml-2"></i>
-        </TableColumn>
-        <TableColumn align="right" width={tableColumnWidths[1].subSectionWidths[1]}>
-          {numberWithCommas(props.thisPeriod)} <i className="fa fa-bookmark ml-2"></i>
-        </TableColumn>
-      </TableSection>
-      <TableSection height={props.height} borderless width={tableColumnWidths[2].subSectionWidths[0]}>
-        <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
-          {numberWithCommas(props.totalCompletedStoredToDate)} <i className="fa fa-bookmark ml-2"></i>
-        </TableColumn>
-        <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[1]}> {props.percentComplete}%</TableColumn>
-        <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[2]}> {numberWithCommas(props.balanceToFinish)}  </TableColumn>
-      </TableSection>
-    </TableRow>
-  </div>);
-};
+    const showTicketDetail = () => {
+      setRowIsSelected(true);
+      props.loadTickets();
+      props.openTicketsPanel();
+      console.log(` colo clicked row ${props.line}`);
+    };
+
+    return (<div>
+      <TableRow isSelected={rowIsSelected} onClick={showTicketDetail} isLast={props.isLast} className="d-flex">
+        <TableSection height={props.height} width={tableColumnWidths[0].sectionWidth}>
+          <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}> {props.line} </TableColumn>
+          <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}> {props.item} </TableColumn>
+          <TableColumn width={tableColumnWidths[0].subSectionWidths[2]}>
+            <RowDescription title={props.description}> {props.description} </RowDescription>
+          </TableColumn>
+          <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[3]}> {numberWithCommas(props.bidQuantity)} </TableColumn>
+          <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[4]}> {props.unit} </TableColumn>
+        </TableSection>
+        <TableSection height={props.height} width={tableColumnWidths[1].sectionWidth}>
+          <TableColumn align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
+            {numberWithCommas(props.previousPeriod)} <i className="fa fa-bookmark ml-2"></i>
+          </TableColumn>
+          <TableColumn align="right" width={tableColumnWidths[1].subSectionWidths[1]}>
+            {numberWithCommas(props.thisPeriod)} <i className="fa fa-bookmark ml-2"></i>
+          </TableColumn>
+        </TableSection>
+        <TableSection height={props.height} borderless width={tableColumnWidths[2].subSectionWidths[0]}>
+          <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
+            {numberWithCommas(props.totalCompletedStoredToDate)} <i className="fa fa-bookmark ml-2"></i>
+          </TableColumn>
+          <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[1]}> {props.percentComplete}%</TableColumn>
+          <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[2]}> {numberWithCommas(props.balanceToFinish)}  </TableColumn>
+        </TableSection>
+      </TableRow>
+    </div>);
+  });
 
 
-const ReconciliationTable = () => {
+const ReconciliationTable = ( { isTicketsPanelOpen } ) => {
   const getData = async () => {
     // simulate network
     await sleep(1000);
@@ -425,9 +437,7 @@ const ReconciliationTable = () => {
 
   return (<Container>
     <Headers>
-      {/* <TicketPanel isOpen={true} >
-        
-      </TicketPanel> */}
+      <TicketPanel isOpen={isTicketsPanelOpen} />
       <TableSection width={tableColumnWidths[0].sectionWidth}>
         <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
         <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[1]}> Item </TableColumnHeader>
@@ -456,4 +466,6 @@ const ReconciliationTable = () => {
   </Container>);
 }; 
 
-export default ReconciliationTable; 
+export default connect( state => ({ 
+  isTicketsPanelOpen: state.ticketsPanel.isOpen 
+} ))(ReconciliationTable);

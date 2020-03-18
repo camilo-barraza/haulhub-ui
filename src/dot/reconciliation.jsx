@@ -4,6 +4,8 @@ import styled from "styled-components";
 import MaterialsTable from "./tables/materials_table";
 import Dropdown from "./common/dropdown";
 import RangeDatePicker from "./common/range_date_picker";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 const Container = styled.div`
   max-width: 1300px;
@@ -53,29 +55,31 @@ const Reconciliation = () => {
     console.log(date);
   };
 
-  return (<Wrapper className='d-flex  justify-content-center'>
-    <Container className='w-100'>
-      <div style={{ marginLeft: "0px", marginTop: "35px" }} className='d-flex w-100 justify-content-between align-items-center'>
-        <div className='d-flex align-items-center justify-content-center'>
-          <SelectProjectText className='mr-3'>
+  return (<Provider store={store}>
+    <Wrapper className='d-flex  justify-content-center'>
+      <Container className='w-100'>
+        <div style={{ marginLeft: "0px", marginTop: "35px" }} className='d-flex w-100 justify-content-between align-items-center'>
+          <div className='d-flex align-items-center justify-content-center'>
+            <SelectProjectText className='mr-3'>
             Select Project
-          </SelectProjectText>
-          <Dropdown onChange={(menuItem) => {
-            console.log(menuItem);
-          }} menuOptions={menuOptions} ></Dropdown>
+            </SelectProjectText>
+            <Dropdown onChange={(menuItem) => {
+              console.log(menuItem);
+            }} menuOptions={menuOptions} ></Dropdown>
+          </div>
+          <RangeDatePicker
+            onChangeStartDate={onChangeStartDate}
+            onChangeEndDate={onChangeEndDate} />
         </div>
-        <RangeDatePicker
-          onChangeStartDate={onChangeStartDate}
-          onChangeEndDate={onChangeEndDate} />
-      </div>
-      <MarginTop>
-        <ReconciliationTable />
-      </MarginTop>
-      <div style={{ marginTop: "35px" }}>
-        <MaterialsTable></MaterialsTable>
-      </div>
-    </Container>
-  </Wrapper>);
+        <MarginTop>
+          <ReconciliationTable />
+        </MarginTop>
+        <div style={{ marginTop: "35px" }}>
+          <MaterialsTable></MaterialsTable>
+        </div>
+      </Container>
+    </Wrapper>
+  </Provider>);
 };
 
 export default Reconciliation;
