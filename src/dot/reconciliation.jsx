@@ -40,7 +40,7 @@ const menuOptions = [
 ];
 
 const SelectProjectText = styled.div`
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 12px;
   color: #2C123F;
 `;
@@ -56,11 +56,11 @@ const Reconciliation = () => {
   };
 
   return (<Provider store={store}>
-    <Wrapper className='d-flex  justify-content-center'>
-      <Container className='w-100'>
-        <div style={{ marginLeft: "0px", marginTop: "35px" }} className='d-flex w-100 justify-content-between align-items-center'>
-          <div className='d-flex align-items-center justify-content-center'>
-            <SelectProjectText className='mr-3'>
+    <Wrapper className="d-flex  justify-content-center">
+      <Container className="w-100">
+        <div style={{ marginLeft: "0px", marginTop: "35px" }} className="d-flex w-100 justify-content-between align-items-center">
+          <div className="d-flex align-items-center justify-content-center">
+            <SelectProjectText className="mr-3">
             Select Project
             </SelectProjectText>
             <Dropdown onChange={(menuItem) => {

@@ -103,8 +103,8 @@ const StatusIcon = ({ icon, iconBackgroundColor, iconColor, backgroundColor }) =
 
 
 const TicketCard =  ( { number, time, accepted, truck, material }) => {
-  return (<CardWrapper className='mt-3 d-flex flex-wrap align-items-center'>
-    <div className='d-flex'>
+  return (<CardWrapper className="mt-3 d-flex flex-wrap align-items-center">
+    <div className="d-flex">
       <Field isFirst withoutMargin>
         <FieldTitle> Number </FieldTitle>
         <FieldValue> {number} </FieldValue>
@@ -116,21 +116,21 @@ const TicketCard =  ( { number, time, accepted, truck, material }) => {
       <Field>
         <FieldTitle> Status </FieldTitle>
         <FieldValue> 
-          {accepted? <div className='d-flex'>
+          {accepted? <div className="d-flex">
             <StatusIcon icon="check" backgroundColor="#F5EEFA" iconColor="white" iconBackgroundColor="#7D45A4"/>
-            <div className='ml-1'>
+            <div className="ml-1">
               Accepted
             </div>
-          </div> : <div className='d-flex'>
+          </div> : <div className="d-flex">
             <StatusIcon icon="exclamation" backgroundColor="#391751" iconColor="#5C406F" iconBackgroundColor="white" />
-            <div className='ml-1'>
+            <div className="ml-1">
                 Rejected
             </div>
           </div>}
         </FieldValue>
       </Field>
     </div>
-    <div className='d-flex'>
+    <div className="d-flex">
       <Field isFirst withoutMargin>
         <FieldTitle> Truck </FieldTitle>
         <FieldValue> {truck} </FieldValue>
@@ -158,10 +158,10 @@ const TicketDetails = connect(state => ({
     console.log(loading, tickets);
     return (<div className="w-100">
       <Header> 
-        <i className='mr-2 fa fa-bookmark'></i>
+        <i className="mr-2 fa fa-bookmark"></i>
       Tickets 
       </Header>
-      {loading && <div className='d-flex align-items-center justify-content-center mt-5'>
+      {loading && <div className="d-flex align-items-center justify-content-center mt-5">
         <Spinner/>
       </div>}
       {tickets.map((ticket, index) => (<div key={index}>
