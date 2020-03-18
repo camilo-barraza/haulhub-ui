@@ -265,7 +265,8 @@ export const TableRow = styled.div`
   text-align: center;
   border-bottom: ${props => { return !props.isLast ? "1px solid #EAE7ED" : ""; }} ;
   background-color: color ;
-  font-weight: normal;
+  font-weight: ${props => {return props.isSelected? "bold": "normal";}};
+  border: ${props => { return props.isSelected ? "dotted 0.1px #7D45A4": "";}} ;
 
   :hover {
     cursor: pointer;
@@ -382,10 +383,10 @@ const Row = (props) => {
   };
 
   return (<div>
-    {/* <TicketPanel isOpen={isTicketDetailOpen} setIsOpen={setIsTicketDetailOpen} >
+    <TicketPanel isOpen={isTicketDetailOpen} setIsOpen={setIsTicketDetailOpen} >
       <div className="d-flex align-items-center justify-content-center mt-5">{props.line}</div>
-    </TicketPanel> */}
-    <TableRow onClick={showTicketDetail} isLast={props.isLast} className="d-flex">
+    </TicketPanel>
+    <TableRow isSelected={isTicketDetailOpen} onClick={showTicketDetail} isLast={props.isLast} className="d-flex">
       <TableSection height={props.height} width={tableColumnWidths[0].sectionWidth}>
         <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}> {props.line} </TableColumn>
         <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}> {props.item} </TableColumn>
@@ -424,9 +425,9 @@ const ReconciliationTable = () => {
 
   return (<Container>
     <Headers>
-      <TicketPanel isOpen={true} >
+      {/* <TicketPanel isOpen={true} >
         
-      </TicketPanel>
+      </TicketPanel> */}
       <TableSection width={tableColumnWidths[0].sectionWidth}>
         <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
         <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[1]}> Item </TableColumnHeader>

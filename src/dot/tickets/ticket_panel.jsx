@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   background-color: #F6F7FC ;
   z-index:1000;
   border-left: 1px solid #EFEEF2;
+  padding-bottom: 50px;
 
   ::-webkit-scrollbar {
     width: 8px;
@@ -44,7 +45,7 @@ const Backdrop = styled.div`
   transition: transform 0.2s cubic-bezier(0,0,0.3,1);
   overflow: hidden;
   background-color: white;
-  opacity: ${props => { return props.isOpen ? "0.2" : "0"; }};
+  opacity: ${props => { return props.isOpen ? "0.6" : "0"; }};
   display: ${props => { return props.isOpen ? "block" : "none"; }};
   z-index: 200;
   -webkit-touch-callout: none;
