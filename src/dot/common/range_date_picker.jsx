@@ -35,11 +35,24 @@ const DateText = styled.div`
   align-items: center;
 `;
 
-const StartDateText = styled(DateText)`
-  margin-left: 10px;
+const Label = styled.div`
+  font-size: 12px;
+  font-family: "Open Sans", sans-serif;
+  color:#808080;
+  margin-right: 18px;
 `;
 
-const EndDateText = styled(DateText)`
+const Button = styled(Label)`
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  :hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 `;
 
 const RangeDatePicker = () => {
@@ -59,22 +72,28 @@ const RangeDatePicker = () => {
     setEndDate(startDate && !endDate ? startDate : endDate);
   };
 
+  const setDefault = () => {
+    console.log("clicked default");
+  };
+
   const render = () => {
-    return (<div>
+    return (<div className='d-flex align-items-center justify-content-center'>
+      <Label> Date Filter </Label>
       <RangeDatePickerContainer onClick={() => { setIsOpen(true); }} className="position-relative d-flex align-items-center justify-content-between">
         <div className="d-flex align-items-center justify-content-center">
-          <StartDateText>
+          <DateText style={{ marginLeft: "10px" }}>
             {moment(startDate).format("DD/MM/YYYY")}
-          </StartDateText>
+          </DateText>
           <div className="mx-1 d-flex align-items-center justify-content-center" style={{ height: "100%" }}> - </div>
-          <EndDateText>
+          <DateText >
             {moment(endDate).format("DD/MM/YYYY")}
-          </EndDateText>
+          </DateText>
         </div>
         <DatePickerIcon >
           <i className="fa fa-calendar mr-2" />
         </DatePickerIcon>
       </RangeDatePickerContainer>
+      <Button className='ml-3' onClick={setDefault}> <i className='fa fa-refresh mr-1'/> Default </Button>
       {isOpen &&
         <div className='reconciliation'>
           <div className='position-absolute w-100 mt-2'>

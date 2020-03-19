@@ -147,7 +147,7 @@ export default connect((state) => ({
         setScrollbarWidth(_scrollbarWidth);
     };
 
-    return (<Container width="890px">
+    return (<Container width="75%">
       <Headers scrollbarWidth={scrollbarWidth}>
         <TableSection borderless className="d-flex flex-column align-items-center justify-content-center" width={tableColumnWidths[0].sectionWidth}>
           <SectionHeader className="d-flex align-items-center"> Unallocated Quantities </SectionHeader>

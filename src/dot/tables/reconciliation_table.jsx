@@ -14,7 +14,7 @@ export function numberWithCommas(x) {
 
 export const Container = styled.div`
   background-color: white ;
-  width: ${props => {return props.width? props.width: "1200px";}};
+  width: ${props => {return props.width? props.width: "100%";}};
   border-radius: 4px;
   box-shadow: 0 1px 5px 0 rgba(44, 18, 63, 0.1); 
   border: solid 0.4px #EAE8ED ;
