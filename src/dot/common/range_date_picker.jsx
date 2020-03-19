@@ -77,30 +77,30 @@ const RangeDatePicker = () => {
   };
 
   const render = () => {
-    return (<div className='d-flex align-items-center justify-content-center'>
+    return (<div className='d-flex position-relative align-items-center justify-content-center'>
       <Label> Date Filter </Label>
-      <RangeDatePickerContainer onClick={() => { setIsOpen(true); }} className="position-relative d-flex align-items-center justify-content-between">
-        <div className="d-flex align-items-center justify-content-center">
-          <DateText style={{ marginLeft: "10px" }}>
-            {moment(startDate).format("DD/MM/YYYY")}
-          </DateText>
-          <div className="mx-1 d-flex align-items-center justify-content-center" style={{ height: "100%" }}> - </div>
-          <DateText >
-            {moment(endDate).format("DD/MM/YYYY")}
-          </DateText>
-        </div>
-        <DatePickerIcon >
-          <i className="fa fa-calendar mr-2" />
-        </DatePickerIcon>
-      </RangeDatePickerContainer>
-      <Button className='ml-3' onClick={setDefault}> <i className='fa fa-refresh mr-1'/> Default </Button>
-      {isOpen &&
+      <div>
+        <RangeDatePickerContainer onClick={() => { setIsOpen(true); }} className="position-relative d-flex align-items-center justify-content-between">
+          <div className="d-flex align-items-center justify-content-center">
+            <DateText style={{ marginLeft: "10px" }}>
+              {moment(startDate).format("DD/MM/YYYY")}
+            </DateText>
+            <div className="mx-1 d-flex align-items-center justify-content-center" style={{ height: "100%" }}> - </div>
+            <DateText >
+              {moment(endDate).format("DD/MM/YYYY")}
+            </DateText>
+          </div>
+          <DatePickerIcon >
+            <i className="fa fa-calendar mr-2" />
+          </DatePickerIcon>
+        </RangeDatePickerContainer>
+        {isOpen &&
         <div className='reconciliation'>
           <div className='position-absolute w-100 mt-2'>
             <DayPickerRangeController
               startDate={startDate}
               endDate={endDate}
-              onOutsideClick={() => {setIsOpen(false);}}
+              onOutsideClick={() => { setIsOpen(false); }}
               hideKeyboardShortcutsPanel={true}
               focusedInput={focusedInput}
               onDatesChange={onDatesChange}
@@ -109,6 +109,8 @@ const RangeDatePicker = () => {
             />
           </div>
         </div>}
+      </div>
+      <Button className='ml-3' onClick={setDefault}> <i className='fa fa-refresh mr-1'/> Default </Button>
     </div>
     );
   };
