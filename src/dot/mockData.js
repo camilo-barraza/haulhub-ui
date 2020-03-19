@@ -181,6 +181,8 @@ export const projects = [
   "56 MCINTOSH PKWY NEWNAN SUB"
 ];
 
+export const menuOptions = ["402-3190", "402-3130", "400-3206", "402-3190", "402-3130", "400-3206", "402-3190", "402-3130", "400-3206"];
+
 export const materialsTableData = [
   {
     item: "400-3220",
@@ -229,4 +231,17 @@ export const materialsTableData = [
     material: "8 12.5mm w/RECY LIME",
     unit: "TN",
     workCompletedThisPeriod: 5000
-  }];
+  },
+  {
+    item: "400-3206",
+    material: "9 12.5mm w/RECY LIME",
+    unit: "TN",
+    workCompletedThisPeriod: 5000
+  },
+  {
+    item: "400-3206",
+    material: "10 12.5mm w/RECY LIME",
+    unit: "TN",
+    workCompletedThisPeriod: 5000
+  },
+];

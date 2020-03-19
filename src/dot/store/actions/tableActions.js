@@ -1,5 +1,26 @@
 import { tables } from "../reducers/tableReducer";
-import { reconciliationTableData, materialsTableData } from "../../mockData";
+import { 
+  LOAD_MATERIALS_OPTIONS_REQUEST, 
+  LOAD_MATERIALS_OPTIONS_SUCCESS, 
+  LOAD_MATERIALS_OPTIONS_FAILURE 
+} from "../reducers/materialsReducer";
+
+import { reconciliationTableData, materialsTableData, menuOptions } from "../../mockData";
+
+export const loadMaterialOptions = () => {
+  return dispatch => {
+    dispatch({
+      types: [LOAD_MATERIALS_OPTIONS_REQUEST, LOAD_MATERIALS_OPTIONS_SUCCESS, LOAD_MATERIALS_OPTIONS_FAILURE],
+      callAPI: () => new Promise(resolve => {
+        setTimeout(() => {
+          resolve({
+            data: menuOptions
+          });
+        }, 1000);
+      })
+    });
+  };
+};
 
 export const loadTableFirstPage = (tableType) => {
   return (dispatch, getState) => {
@@ -13,9 +34,12 @@ export const loadTableFirstPage = (tableType) => {
       callAPI: () => new Promise(resolve => {
         setTimeout(() => {
           resolve({
-            data: {
+            data: tableType === state.reconciliationTable.tableType ? {
               totalPages: 3,
-              payload: tableType === state.reconciliationTable.tableType? reconciliationTableData : materialsTableData
+              payload:  reconciliationTableData
+            }: {
+              totalPages: 2,
+              payload: materialsTableData
             }
           });
         }, 1000);

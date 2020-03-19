@@ -184,7 +184,8 @@ export const Rows = ({ tableType, data, loadingData, loadedLastPage, loadData, R
         onDropdownOpen={onDropdownOpen} 
         index={index} height="50px" 
         key={index} 
-        isLast={index === data.length - 1} {...row} />)}
+        isLast={index === data.length - 1} 
+        {...row} />)}
     {loadingData && <div className="my-3">
       <Spinner />
     </div>}

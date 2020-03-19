@@ -17,13 +17,15 @@ export const tables = {
   }
 };
 
-export default (state = {
+export const initialState = {
   loading: false,
   currentPage: 0,
   loadedLastPage: false,
   totalPages: 0,
   data: []
-}, action, tableType) => {
+};
+
+export default (state = initialState, action, tableType) => {
   state = {...state, tableType};
   switch (action.type) {
   // --------------- First page ----------------------

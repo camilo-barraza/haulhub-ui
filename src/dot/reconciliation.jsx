@@ -8,6 +8,7 @@ import RangeDatePicker from "./common/range_date_picker";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import { selectProject, loadProjects } from "./store/actions/projectSelectorActions";
+import { loadMaterialOptions } from "./store/actions/tableActions";
 import Spinner from "./common/spinner";
 
 const Container = styled.div`
@@ -62,12 +63,14 @@ const Reconciliation = connect((state) => ({
   selectedProject: state.projectSelector.selectedProject
 }), { 
   loadProjects,
-  selectProject
+  selectProject,
+  loadMaterialOptions
 }) ( 
-  ({ loadingProjects, selectedProject, menuOptions, selectProject, loadProjects }) => {
+  ({ loadMaterialOptions, loadingProjects, selectedProject, menuOptions, selectProject, loadProjects }) => {
 
     useEffect(()=>{
       loadProjects();
+      loadMaterialOptions();
     }, []);
 
     const onChangeStartDate = (date) => {
@@ -104,7 +107,7 @@ const Reconciliation = connect((state) => ({
               <ReconciliationTable />
             </MarginTop>
             <div style={{ marginTop: "35px" }}>
-              {/* <MaterialsTable></MaterialsTable> */}
+              <MaterialsTable></MaterialsTable>
             </div>
           </Container>}
       </Wrapper>);
