@@ -21,12 +21,14 @@ const Menu = styled.div`
   width: 100%;
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
-
   max-height: ${props => {return props.height? props.height: "220px";}} ;
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 0 3px 4px 0 rgba(44, 18, 63, 0.1);
   border-bottom: 5px white solid;
+
+  scrollbar-width: thin;
+  scrollbar-color: #EDEBF3 #ffffff;
 
   ::-webkit-scrollbar {
     width: 11px;

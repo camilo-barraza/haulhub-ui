@@ -135,14 +135,20 @@ export default connect((state) => ({
     loadTableFirstPage,
     loadTablePage
   }) => {
+    const [scrollbarWidth, setScrollbarWidth] = useState(0);
 
     useEffect(() => {
       if (selectedProject !== "")
         loadTableFirstPage(tableType);
     }, [selectedProject]);
 
+    const onRenderRows = (_scrollbarWidth) => {
+      if (scrollbarWidth !== _scrollbarWidth)
+        setScrollbarWidth(_scrollbarWidth);
+    };
+
     return (<Container width="890px">
-      <Headers>
+      <Headers scrollbarWidth={scrollbarWidth}>
         <TableSection borderless className="d-flex flex-column align-items-center justify-content-center" width={tableColumnWidths[0].sectionWidth}>
           <SectionHeader className="d-flex align-items-center"> Unallocated Quantities </SectionHeader>
           <SectionSubheaders>
@@ -161,6 +167,7 @@ export default connect((state) => ({
         </TableSection>
       </Headers>
       <Rows
+        onRender={onRenderRows}
         maxHeight="400px"
         tableType={tableType}
         data={data}

@@ -154,7 +154,7 @@ const Reconciliation = connect((state) => ({
               <ReconciliationTable />
             </MarginTop>
             <div style={{ marginTop: "35px" }}>
-              <MaterialsTable></MaterialsTable>
+              <MaterialsTable/>
             </div>
           </Container>}
       </Wrapper>);

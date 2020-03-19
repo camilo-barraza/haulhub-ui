@@ -54,7 +54,7 @@ export const Headers = styled.div`
   display: flex;
   align-items: center;
   border-bottom: solid 1px #EAE8ED ;
-  width: calc(100% - 6px);
+  width: ${props => { return props.scrollbarWidth ? `calc(100% - ${props.scrollbarWidth}px)`: "calc(100% - 6px)";}};
 `;
 
 export const SectionSubheaders = styled.div`
@@ -136,6 +136,10 @@ export const RowsContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   max-height: ${props => { return props.maxHeight ? props.maxHeight : "254px"; }};
+  scrollbar-width: thin;
+
+  scrollbar-width: thin;
+  scrollbar-color: #EDEBF3 #ffffff;
 
   ::-webkit-scrollbar {
     width: 6px;
@@ -156,8 +160,14 @@ export const RowsContainer = styled.div`
   } 
 `;
 
-export const Rows = ({ tableType, data, loadingData, loadedLastPage, loadData, RowLayout, maxHeight }) => {
+export const Rows = ({ tableType, data, onRender = () => {}, loadingData, loadedLastPage, loadData, RowLayout, maxHeight }) => {
   const rowsRef = React.createRef();
+  const rowChildRef = React.createRef();
+
+  useEffect(() => {
+    const scrollbarWidth = rowChildRef.current.parentNode.offsetWidth - rowChildRef.current.offsetWidth;
+    onRender(scrollbarWidth);
+  });
 
   const onScroll = () => {
     if (loadingData || loadedLastPage)
@@ -178,17 +188,19 @@ export const Rows = ({ tableType, data, loadingData, loadedLastPage, loadData, R
   };
 
   return (<RowsContainer maxHeight={maxHeight} ref={rowsRef} onScroll={onScroll}>
-    {data.map((row, index) =>
-      <RowLayout 
-        onDropdownClose={onDropdownClose}
-        onDropdownOpen={onDropdownOpen} 
-        index={index} height="50px" 
-        key={index} 
-        isLast={index === data.length - 1} 
-        {...row} />)}
-    {loadingData && <div className="my-3">
-      <Spinner />
-    </div>}
+    <div ref={rowChildRef}>
+      {data.map((row, index) =>
+        <RowLayout 
+          onDropdownClose={onDropdownClose}
+          onDropdownOpen={onDropdownOpen} 
+          index={index} height="50px" 
+          key={index} 
+          isLast={index === data.length - 1} 
+          {...row} />)}
+      {loadingData && <div className="my-3">
+        <Spinner />
+      </div>}
+    </div>
   </RowsContainer>);
 };
 
@@ -278,14 +290,21 @@ export default connect((state) => ({
     loadTableFirstPage, 
     loadTablePage 
   }) => {
+    const [scrollbarWidth, setScrollbarWidth] = useState(0);
 
     useEffect(()=>{
       if(selectedProject !== "")
         loadTableFirstPage(tableType);
     },[selectedProject]);
 
+    const onRenderRows = (_scrollbarWidth) => {
+      if(scrollbarWidth !== _scrollbarWidth)
+        setScrollbarWidth(_scrollbarWidth);
+    };
+
+    console.log("scwidth",scrollbarWidth);
     return (<Container>
-      <Headers>
+      <Headers scrollbarWidth={scrollbarWidth}>
         <TicketPanel isOpen={isTicketsPanelOpen} />
         <TableSection width={tableColumnWidths[0].sectionWidth}>
           <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
@@ -312,6 +331,7 @@ export default connect((state) => ({
         </TableSection>
       </Headers>
       <Rows 
+        onRender={onRenderRows}
         tableType={tableType}
         data={data}
         loadData={loadTablePage} 
