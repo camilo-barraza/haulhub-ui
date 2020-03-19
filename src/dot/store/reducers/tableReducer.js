@@ -33,13 +33,14 @@ export default (state = initialState, action, tableType) => {
     return {
       ...state,
       loading: true,
+      currentPage: 1,
+      loadedLastPage: false,
       data: []
     };
   case tables[tableType].LOAD_TABLE_FIRST_PAGE_SUCCESS:
     return {
       ...state,
       loading: false,
-      currentPage: 1,
       totalPages: action.response.data.totalPages,
       data: action.response.data.payload
     };

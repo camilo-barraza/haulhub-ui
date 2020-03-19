@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ReconciliationTable from "./tables/reconciliation_table";
 import styled from "styled-components";
@@ -10,6 +10,8 @@ import store from "./store/store";
 import { selectProject, loadProjects } from "./store/actions/projectSelectorActions";
 import { loadMaterialOptions } from "./store/actions/tableActions";
 import Spinner from "./common/spinner";
+import { projectDetails as projectDetailsMockData } from "./mockData";
+import ProjectDetails from "./projectDetails";
 
 const Container = styled.div`
   max-width: 1300px;
@@ -28,7 +30,7 @@ const Wrapper = styled.div`
 `;
 
 const MarginTop = styled.div`
-  margin-top: 70px;
+  margin-top: 33px;
 `;
 
 const SelectProjectText = styled.div`
@@ -51,27 +53,65 @@ const LoadingProjects = styled.div`
   text-align: center;
 `;
 
+const ProjectDetailsContainer = styled.div`
+  margin-top:80px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+`;
+
 const ReconciliationPage = () => {
   return (< Provider store = { store }>
     <Reconciliation/>
   </ Provider>);
 };
 
+var sleep = n => new Promise(resolve => setTimeout(resolve, n));
+
 const Reconciliation = connect((state) => ({
   menuOptions: state.projectSelector.menuOptions,
   loadingProjects: state.projectSelector.loading,
-  selectedProject: state.projectSelector.selectedProject
+  selectedProject: state.projectSelector.selectedProject,
+  isReconciliationTableLoading: state.reconciliationTable.loading,
+  isMaterialsTableLoading: state.materials.table.loading,
 }), { 
   loadProjects,
   selectProject,
   loadMaterialOptions
 }) ( 
-  ({ loadMaterialOptions, loadingProjects, selectedProject, menuOptions, selectProject, loadProjects }) => {
+  ({ 
+    isMaterialsTableLoading,
+    isReconciliationTableLoading,
+    loadMaterialOptions, 
+    loadingProjects, 
+    selectedProject, 
+    menuOptions, 
+    selectProject, 
+    loadProjects 
+  }) => {
+
+    const [loadingProjectDetails, setLoadingProjectDetails] = useState(false);
+    const [projectDetails, setProjectDetails] = useState({});
 
     useEffect(()=>{
       loadProjects();
       loadMaterialOptions();
     }, []);
+
+    const loadProjectDetails = async () => {
+      // emulate network
+      setLoadingProjectDetails(true);
+      await sleep(1000);
+      // selectedProject as param for api request
+
+      setProjectDetails(projectDetailsMockData);
+      setLoadingProjectDetails(false);
+    };
+
+    useEffect(()=>{
+      loadProjectDetails();
+    },[selectedProject]);
 
     const onChangeStartDate = (date) => {
       console.log(date);
@@ -87,14 +127,16 @@ const Reconciliation = connect((state) => ({
           <div style={{marginTop:"300px"}}>
             <Spinner/>
           </div>
-        </LoadingProjects>:
+        </LoadingProjects>
+          :
           <Container className="w-100">
             <div style={{ marginLeft: "0px", marginTop: "35px" }} className="d-flex w-100 justify-content-between align-items-center">
               <div className="d-flex align-items-center justify-content-center">
                 <SelectProjectText className="mr-3">
-                  Select Project
+                Select Project
                 </SelectProjectText>
                 <Dropdown 
+                  disabled={isReconciliationTableLoading || isMaterialsTableLoading}
                   selectedValue={selectedProject}
                   onChange={selectProject} 
                   menuOptions={menuOptions} ></Dropdown>
@@ -103,6 +145,11 @@ const Reconciliation = connect((state) => ({
                 onChangeStartDate={onChangeStartDate}
                 onChangeEndDate={onChangeEndDate} />
             </div>
+            <ProjectDetailsContainer>
+              {loadingProjectDetails ?
+                <Spinner />
+                : <ProjectDetails {...projectDetails} />}
+            </ProjectDetailsContainer>
             <MarginTop>
               <ReconciliationTable />
             </MarginTop>

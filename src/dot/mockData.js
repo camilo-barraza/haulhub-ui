@@ -181,6 +181,13 @@ export const projects = [
   "56 MCINTOSH PKWY NEWNAN SUB"
 ];
 
+export const projectDetails = {
+  contract: "32359",
+  aplicationDate: "2018-08-29 11:10:46.526069",
+  dueDate: "2018-08-29 11:10:46.526069",
+  billingDateRange: "2018-08-29 11:10:46.526069"
+};
+
 export const menuOptions = ["402-3190", "402-3130", "400-3206", "402-3190", "402-3130", "400-3206", "402-3190", "402-3130", "400-3206"];
 
 export const materialsTableData = [

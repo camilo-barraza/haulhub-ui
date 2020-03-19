@@ -87,6 +87,7 @@ const DropdownContainer = styled.div`
   display: flex;
   align-items: center;
   background-color: ${props => { return props.isOpen ? "white" : "#FCFDFF"; }} ;
+  opacity: ${props => {return props.disabled? "0.5": "";}};
 
   border: ${props => { return props.isOpen ? "": "solid 1px #EBE9EE "; }} ;
   box-shadow: ${props => { return props.isOpen ? "0 3px 4px 0 rgba(44, 18, 63, 0.2)": "";}};
@@ -216,6 +217,7 @@ const Dropdown = ({
   width, 
   height = "190px",
   onChange, 
+  disabled,
   onDropdownClose = () => {}, 
   onDropdownOpen = () => {} }) => {
 
@@ -270,7 +272,14 @@ const Dropdown = ({
     onDropdownOpen();
   };
 
-  return (<DropdownContainer width={width} isOpen={isOpen} onClick={evt => {evt.stopPropagation(); evt.preventDefault(); setIsOpen(true);}}>
+  const openDropdownMenu = evt => {
+    evt.stopPropagation(); 
+    evt.preventDefault(); 
+    if(!disabled)
+      setIsOpen(true);
+  };
+
+  return (<DropdownContainer disabled={disabled} width={width} isOpen={isOpen} onClick={openDropdownMenu}>
     <SelectorContainer className="w-100">
       <Selector hasValue={selectedValue.length > 1} className="w-100 d-flex justify-content-between">
         <SelectorText>
