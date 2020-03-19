@@ -32,7 +32,8 @@ export default (state = initialState, action, tableType) => {
   case tables[tableType].LOAD_TABLE_FIRST_PAGE_REQUEST:
     return {
       ...state,
-      loading: true
+      loading: true,
+      data: []
     };
   case tables[tableType].LOAD_TABLE_FIRST_PAGE_SUCCESS:
     return {
