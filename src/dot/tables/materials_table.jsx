@@ -63,7 +63,14 @@ const tableColumnWidths = [{
 
 
 const Row = (props) => {
+  const [selectedItem, setSelectedItem] = useState(props.item);
+
+  useEffect(()=>{
+    setSelectedItem(props.item);
+  },[props.item]);
+
   const onChangeMaterial = (menuOption) => {
+    setSelectedItem(menuOption);
     console.log(props.index, menuOption);
   };
 
@@ -74,6 +81,7 @@ const Row = (props) => {
           onDropdownOpen={props.onDropdownOpen}
           onDropdownClose={props.onDropdownClose}
           height="140px"
+          selectedValue={selectedItem}
           onChange={onChangeMaterial} 
           width="114px" 
           menuOptions={menuOptions} 

@@ -5,37 +5,13 @@ export const LOAD_TICKETS_REQUEST = "LOAD_TICKETS_REQUEST";
 export const LOAD_TICKETS_SUCCESS = "LOAD_TICKETS_SUCCESS";
 export const LOAD_TICKETS_FAILURE = "LOAD_TICKETS_FAILURE";
 
-const initState = {
+export default (state = {
   isOpen: false,
   data: {
     loading: false,
-    tickets:[
-      {
-        number: "64058703",
-        time: "2018-08-29 11:10:46.526069",
-        accepted: true,
-        truck: "EZ742",
-        material: "18.29 Tons  12.MMSP"
-      },
-      {
-        number: "64058703",
-        time: "2018-08-29 11:10:46.526069",
-        accepted: false,
-        truck: "EZ742",
-        material: "18.29 Tons  12.MMSP"
-      },
-      {
-        number: "64058703",
-        time: "2018-08-29 11:10:46.526069",
-        accepted: true,
-        truck: "EZ742",
-        material: "18.29 Tons  12.MMSP"
-      }
-    ]
+    tickets: []
   }
-};
-
-const ticketsPanelReducer = (state = initState, action) => {
+}, action) => {
   switch (action.type) {
   case OPEN_TICKETS_PANEL:
     return {
@@ -51,7 +27,7 @@ const ticketsPanelReducer = (state = initState, action) => {
     return {
       ...state,
       data: {
-        tickets:[],
+        tickets: [],
         loading: true
       }
     };
@@ -70,16 +46,8 @@ const ticketsPanelReducer = (state = initState, action) => {
         ...state.data.tickets,
         loading: false
       }
-    }; 
+    };
   default:
     return state;
   }
 };
-
-const rootReducer = (state = {}, action) => {
-  return {
-    ticketsPanel: ticketsPanelReducer(state.ticketsPanel, action),
-  };
-};
-
-export default rootReducer;

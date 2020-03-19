@@ -211,7 +211,7 @@ const DropdownBottom = styled.input`
 `;
 
 const Dropdown = ({ 
-  initialValue, 
+  selectedValue = "", 
   menuOptions = [], 
   width, 
   height = "190px",
@@ -221,10 +221,13 @@ const Dropdown = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const [list, setList] = useState(menuOptions? menuOptions: []);
-  const [selectedValue, setSelectedValue] = useState(initialValue? initialValue: "");
   const [inputFocused, setInputFocused] = useState(false);
   const inputRef = React.createRef();
   const bottomRef = React.createRef();
+
+  useEffect(() => {
+    setList(menuOptions);
+  }, [menuOptions]);
 
   useEffect(() => {
     if(isOpen)
@@ -242,7 +245,6 @@ const Dropdown = ({
   }, [inputFocused]);
 
   const onSelect = (menuItem)  => {
-    setSelectedValue(menuItem);
     setIsOpen(false);
     if(onChange)
       onChange(menuItem);

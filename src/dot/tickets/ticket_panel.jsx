@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import TicketDetails from "./ticket_details";
 import { connect } from "react-redux";
-import { closeTicketsPanel } from "../store/actions";
+import { closeTicketsPanel } from "../store/actions/ticketsPanelActions";
 
 const Wrapper = styled.div`
   right:0;
@@ -85,24 +85,24 @@ const CloseIcon = styled.div`
   }
 `;
 
-const TicketPanel = ({ isOpen, setIsOpen = () => {}, children, closeTicketsPanel }) => {
-  React.useEffect(() => {
-    if (isOpen)
-      document.body.style.overflowY = "hidden";
-    else
-      document.body.style.overflowY = "auto";
-  }, [isOpen]);
+export default connect( () => ({}), { closeTicketsPanel } )(
+  ({ isOpen, closeTicketsPanel }) => {
+    React.useEffect(() => {
+      if (isOpen)
+        document.body.style.overflowY = "hidden";
+      else
+        document.body.style.overflowY = "auto";
+    }, [isOpen]);
 
-  return (<div>
-    <Backdrop className="flex-row-reverse" isOpen={isOpen} onClick={closeTicketsPanel} />
-    <Wrapper  isOpen={isOpen} >
-      <CloseIcon onClick={closeTicketsPanel}>
-        <i className="fa fa-times"/>
-      </CloseIcon>
-      <TicketDetails/>
-    </Wrapper>
-  </div>
-  );
-};
-
-export default connect( () => ({}), { closeTicketsPanel } )(TicketPanel);
+    return (<div>
+      <Backdrop className="flex-row-reverse" isOpen={isOpen} onClick={closeTicketsPanel} />
+      <Wrapper isOpen={isOpen} >
+        <CloseIcon onClick={closeTicketsPanel}>
+          <i className="fa fa-times" />
+        </CloseIcon>
+        <TicketDetails />
+      </Wrapper>
+    </div>
+    );
+  }
+);

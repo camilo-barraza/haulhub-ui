@@ -4,9 +4,9 @@ import {
   LOAD_TICKETS_REQUEST,
   LOAD_TICKETS_FAILURE,
   LOAD_TICKETS_SUCCESS
-} from "./reducers";
+} from "../reducers/ticketsPanelReducer";
 
-import { ticketDetailsData } from "../mockData";
+import { ticketDetailsData } from "../../mockData";
 
 export const loadTickets = (itemId) => {
   return dispatch => {

@@ -3,8 +3,8 @@ import styled from "styled-components";
 import Spinner from "../common/spinner";
 import { connect } from "react-redux";
 import TicketPanel from "../tickets/ticket_panel";
-import { reconciliationTableData as mockData } from "../mockData";
-import { openTicketsPanel, loadTickets } from "../store/actions";
+import { openTicketsPanel, loadTickets } from "../store/actions/ticketsPanelActions";
+import { loadTableFirstPage, loadTablePage } from "../store/actions/tableActions";
 
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
@@ -156,41 +156,15 @@ export const RowsContainer = styled.div`
   } 
 `;
 
-export const Rows = ({ getData, totalPages, RowLayout, maxHeight }) => {
+export const Rows = ({ tableType, data, loadingData, loadedLastPage, loadData, RowLayout, maxHeight }) => {
   const rowsRef = React.createRef();
-  const currentPage = React.useRef(1);
-  const loadedLastPage = React.useRef(false);
-  const [loadingData, setLoadingData] = useState(false);
-  const [rows, setRows] = useState([]);
-
-  const getInitialData = async () => {
-    const data = await getData();
-    setRows(data);
-    setLoadingData(false);
-  };
-
-  useEffect( () => {
-    setLoadingData(true);
-    getInitialData();
-  }, []);
-
-  const loadData = async () => {
-    const data = await getData();
-    setRows([...rows, ...data]);
-    setLoadingData(false);
-    currentPage.current = currentPage.current+1;
-    if (currentPage.current === totalPages)
-      loadedLastPage.current = true;
-  };
 
   const onScroll = () => {
-    if (loadingData || loadedLastPage.current)
+    if (loadingData || loadedLastPage)
       return;
     const rowsElement = rowsRef.current;
-    if (rowsElement.scrollHeight - rowsElement.offsetHeight - rowsElement.scrollTop < 40) {
-      setLoadingData(true);
-      loadData();
-    }
+    if (rowsElement.scrollHeight - rowsElement.offsetHeight - rowsElement.scrollTop < 40) 
+      loadData(tableType);
   };
 
   const onDropdownOpen = async () => {
@@ -204,13 +178,13 @@ export const Rows = ({ getData, totalPages, RowLayout, maxHeight }) => {
   };
 
   return (<RowsContainer maxHeight={maxHeight} ref={rowsRef} onScroll={onScroll}>
-    {rows.map((row, index) =>
+    {data.map((row, index) =>
       <RowLayout 
         onDropdownClose={onDropdownClose}
         onDropdownOpen={onDropdownOpen} 
         index={index} height="50px" 
         key={index} 
-        isLast={index === rows.length - 1} {...row} />)}
+        isLast={index === data.length - 1} {...row} />)}
     {loadingData && <div className="my-3">
       <Spinner />
     </div>}
@@ -232,6 +206,7 @@ const tableColumnWidths = [{
 
 
 const Row = connect(state => ({
+  selectedProject: state.projectSelector.selectedProject,
   isTicketDetailOpen: state.ticketsPanel.isOpen
 }), { 
   openTicketsPanel,
@@ -249,7 +224,6 @@ const Row = connect(state => ({
       setRowIsSelected(true);
       props.loadTickets();
       props.openTicketsPanel();
-      console.log(` colo clicked row ${props.line}`);
     };
 
     return (<div>
@@ -283,15 +257,31 @@ const Row = connect(state => ({
   });
 
 
-export default connect( state => ({ 
-  isTicketsPanelOpen: state.ticketsPanel.isOpen 
-} ))(
-  ({ isTicketsPanelOpen }) => {
-    const getData = async () => {
-      // simulate network
-      await sleep(1000);
-      return mockData;
-    };
+export default connect((state) => ({
+  selectedProject: state.projectSelector.selectedProject,
+  isTicketsPanelOpen: state.ticketsPanel.isOpen,
+  loadingData: state.reconciliationTable.loading,
+  loadedLastPage: state.reconciliationTable.loadedLastPage,
+  tableType: state.reconciliationTable.tableType,
+  data: state.reconciliationTable.data,
+}), {
+  loadTableFirstPage, loadTablePage
+}) (
+  ({ 
+    selectedProject, 
+    tableType, 
+    data, 
+    isTicketsPanelOpen, 
+    loadingData, 
+    loadedLastPage, 
+    loadTableFirstPage, 
+    loadTablePage 
+  }) => {
+
+    useEffect(()=>{
+      if(selectedProject !== "")
+        loadTableFirstPage(tableType);
+    },[selectedProject]);
 
     return (<Container>
       <Headers>
@@ -320,6 +310,12 @@ export default connect( state => ({
           </TableColumnHeader>
         </TableSection>
       </Headers>
-      <Rows getData={getData} totalPages={3} RowLayout={Row} />
+      <Rows 
+        tableType={tableType}
+        data={data}
+        loadData={loadTablePage} 
+        loadingData={loadingData} 
+        loadedLastPage={loadedLastPage} 
+        RowLayout={Row} />
     </Container>);
   });

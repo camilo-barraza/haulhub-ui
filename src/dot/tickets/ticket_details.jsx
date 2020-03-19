@@ -155,7 +155,6 @@ const TicketDetails = connect(state => ({
   data: state.ticketsPanel.data
 }))(
   ( { data: { loading, tickets } } ) => {
-    console.log(loading, tickets);
     return (<div className="w-100">
       <Header> 
         <i className="mr-2 fa fa-bookmark"></i>
