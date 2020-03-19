@@ -6,3 +6,27 @@ body {
   overflow-x: hidden;
   font-family: 'Roboto', sans-serif;
 }
+
+.reconciliation .CalendarDay__selected_span {
+  color: #461C63;
+  background: #EDEBF3;
+  border: solid 1px #A28EB2;
+}
+
+.reconciliation .CalendarDay__selected {
+  background: #461C63;
+  color: white;
+  border: solid 1px #A28EB2;
+}
+
+.reconciliation .CalendarDay__selected:hover {
+  background: #705385;
+  color: white;
+  border: solid 1px #A28EB2;
+}
+
+.reconciliation .CalendarDay__hovered_span:hover, .CalendarDay__hovered_span {
+  background: #4E286B;
+  border: solid 1px #A28EB2;
+  color:white;
+}

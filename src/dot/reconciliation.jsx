@@ -12,6 +12,9 @@ import { loadMaterialOptions } from "./store/actions/tableActions";
 import Spinner from "./common/spinner";
 import { projectDetails as projectDetailsMockData } from "./mockData";
 import ProjectDetails from "./projectDetails";
+import moment from "moment";
+import { DayPickerRangeController } from "react-dates";
+
 
 const Container = styled.div`
   max-width: 1300px;
@@ -93,6 +96,10 @@ const Reconciliation = connect((state) => ({
 
     const [loadingProjectDetails, setLoadingProjectDetails] = useState(false);
     const [projectDetails, setProjectDetails] = useState({});
+    const [focusedInput, setFocusedInput] = useState("startDate");
+
+    const [startDate, setStartDate] = useState(moment().add({days:2}));
+    const [endDate, setEndDate] = useState(moment().add({ days: 4 }));
 
     useEffect(()=>{
       loadProjects();
@@ -113,12 +120,13 @@ const Reconciliation = connect((state) => ({
       loadProjectDetails();
     },[selectedProject]);
 
-    const onChangeStartDate = (date) => {
-      console.log(date);
+    const onFocusChange = (focusedInput) => { 
+      setFocusedInput(focusedInput || "startDate");
     };
 
-    const onChangeEndDate = (date) => {
-      console.log(date);
+    const onDatesChange = ({ startDate, endDate }) => {
+      setStartDate(startDate);
+      setEndDate(startDate && !endDate ? startDate : endDate);
     };
 
     return (
@@ -141,9 +149,22 @@ const Reconciliation = connect((state) => ({
                   onChange={selectProject} 
                   menuOptions={menuOptions} ></Dropdown>
               </div>
-              <RangeDatePicker
-                onChangeStartDate={onChangeStartDate}
-                onChangeEndDate={onChangeEndDate} />
+
+
+              {/* <div className='reconciliation'>
+                <DayPickerRangeController
+                  startDate={startDate}
+                  endDate={endDate}
+                  hideKeyboardShortcutsPanel={true}
+                  noBorder={true}
+                  focusedInput={focusedInput}
+                  onDatesChange={onDatesChange} 
+                  onFocusChange={onFocusChange}
+                  initialVisibleMonth={() => moment().add(2, "M")} 
+                />
+              </div> */}
+
+              <RangeDatePicker/>
             </div>
             <ProjectDetailsContainer>
               {loadingProjectDetails ?

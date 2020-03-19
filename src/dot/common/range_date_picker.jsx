@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
+import { DayPickerRangeController } from "react-dates";
+
 
 const RangeDatePickerContainer = styled.div`
   width: 180px;
@@ -8,6 +10,16 @@ const RangeDatePickerContainer = styled.div`
   height:30;
   border-radius: 6px;
   background-color: #FCFDFF;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  :hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 `;
 
 const DatePickerIcon = styled.div`
@@ -62,40 +74,62 @@ const StartDateText = styled(DateText)`
 const EndDateText = styled(DateText)`
 `;
 
+const DayPickerRangeModal = styled.div`
+  position:relative;
+`;
+
 const RangeDatePicker = (props) => {
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(moment());
+  const [endDate, setEndDate] = useState(moment());
+  const [focusedInput, setFocusedInput] = useState("startDate");
+  const [isOpen, setIsOpen] = useState(false);
 
-  const onChangeStartDate = (event) => {
-    setStartDate(event.target.value);
-    if(props.onChangeStartDate)
-      props.onChangeStartDate(event.target.value);
+
+  const onFocusChange = (focusedInput) => {
+    setFocusedInput(focusedInput || "startDate");
   };
 
-  const onChangeEndDate = (event) => {
-    setEndDate(event.target.value);
-    if(props.onChangeEndDate)
-      props.onChangeEndDate(event.target.value);
+  const onDatesChange = ({ startDate, endDate }) => {
+    setStartDate(startDate);
+    setEndDate(startDate && !endDate ? startDate : endDate);
   };
 
   const render = () => {
-    return (<RangeDatePickerContainer className="position-relative d-flex align-items-center justify-content-between">
-      <StartDatePicker type="date" onChange={onChangeStartDate} />
-      <EndDatePicker type="date" onChange={onChangeEndDate} />
-      <div className="d-flex align-items-center justify-content-center">
-        <StartDateText>
-          {moment(startDate).format("DD/MM/YYYY")}
-        </StartDateText>
-        <div className="mx-1"> - </div>
-        <EndDateText>
-          {moment(endDate).format("DD/MM/YYYY")}
-        </EndDateText>
-      </div>
-      <DatePickerIcon >
-        <i className="fa fa-calendar mr-2" />
-      </DatePickerIcon>
-    </RangeDatePickerContainer>);
+    return (<div>
+      <RangeDatePickerContainer onClick={() => { setIsOpen(true); }} className="position-relative d-flex align-items-center justify-content-between">
+        {/* <StartDatePicker type="date" onChange={onChangeStartDate} />
+      <EndDatePicker type="date" onChange={onChangeEndDate} /> */}
+        <div className="d-flex align-items-center justify-content-center">
+          <StartDateText>
+            {moment(startDate).format("DD/MM/YYYY")}
+          </StartDateText>
+          <div className="mx-1"> - </div>
+          <EndDateText>
+            {moment(endDate).format("DD/MM/YYYY")}
+          </EndDateText>
+        </div>
+        <DatePickerIcon >
+          <i className="fa fa-calendar mr-2" />
+        </DatePickerIcon>
+      </RangeDatePickerContainer>
+      {isOpen &&
+        <div className='reconciliation'>
+          <div className='position-absolute w-100 mt-2'>
+            <DayPickerRangeController
+              startDate={startDate}
+              endDate={endDate}
+              onOutsideClick={() => {setIsOpen(false);}}
+              hideKeyboardShortcutsPanel={true}
+              focusedInput={focusedInput}
+              onDatesChange={onDatesChange}
+              onFocusChange={onFocusChange}
+              initialVisibleMonth={() => moment().add(2, "M")}
+            />
+          </div>
+        </div>}
+    </div>
+    );
   };
 
   return render();
