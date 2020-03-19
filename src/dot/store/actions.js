@@ -6,29 +6,7 @@ import {
   LOAD_TICKETS_SUCCESS
 } from "./reducers";
 
-const mockData = [
-  {
-    number: "64058703",
-    time: "2018-08-29 11:10:46.526069",
-    accepted: true,
-    truck: "EZ742",
-    material: "18.29 Tons  12.MMSP"
-  },
-  {
-    number: "64058703",
-    time: "2018-08-29 11:10:46.526069",
-    accepted: false,
-    truck: "EZ742",
-    material: "18.29 Tons  12.MMSP"
-  },
-  {
-    number: "64058703",
-    time: "2018-08-29 11:10:46.526069",
-    accepted: true,
-    truck: "EZ742",
-    material: "18.29 Tons  12.MMSP"
-  }
-];
+import { ticketDetailsData } from "../mockData";
 
 export const loadTickets = (itemId) => {
   return dispatch => {
@@ -37,7 +15,7 @@ export const loadTickets = (itemId) => {
       callAPI: () => new Promise(resolve => {
         setTimeout(() => {
           resolve({
-            data: mockData
+            data: ticketDetailsData
           });
         }, 1000);
       })

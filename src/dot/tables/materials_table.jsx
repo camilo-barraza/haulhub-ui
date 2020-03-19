@@ -12,58 +12,9 @@ import {
   TableSection, 
   numberWithCommas } from "./reconciliation_table";
 import Dropdown from "../common/dropdown";
+import { materialsTableData as mockData } from "../mockData";
 
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
-
-const mockData = [
-  {
-    item: "400-3220",
-    material: "1 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  },
-  {
-    item: "",
-    material: "2 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  },
-  {
-    item: "400-3205",
-    material: "3 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  },
-  {
-    item: "400-3206",
-    material: "4 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  },
-  {
-    item: "",
-    material: "5 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  },
-  {
-    item: "400-3206",
-    material: "6 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  },
-  {
-    item: "400-3206",
-    material: "7 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  },
-  {
-    item: "400-3206",
-    material: "8 12.5mm w/RECY LIME",
-    unit: "TN",
-    workCompletedThisPeriod: 5000
-  }];
 
 const menuOptions = ["402-3190", "402-3130", "400-3206", "402-3190", "402-3130", "400-3206", "402-3190", "402-3130", "400-3206"];
 
