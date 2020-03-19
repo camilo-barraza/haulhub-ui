@@ -302,7 +302,6 @@ export default connect((state) => ({
         setScrollbarWidth(_scrollbarWidth);
     };
 
-    console.log("scwidth",scrollbarWidth);
     return (<Container>
       <Headers scrollbarWidth={scrollbarWidth}>
         <TicketPanel isOpen={isTicketsPanelOpen} />

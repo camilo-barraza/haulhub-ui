@@ -3,7 +3,6 @@ import styled from "styled-components";
 import moment from "moment";
 import { DayPickerRangeController } from "react-dates";
 
-
 const RangeDatePickerContainer = styled.div`
   width: 180px;
   border: solid 1px #ECEBEF ;
@@ -25,30 +24,6 @@ const RangeDatePickerContainer = styled.div`
 const DatePickerIcon = styled.div`
   color: #461C63;
 `;
-const DatePickerInput = styled.input`
-  position: absolute;
-  width: 65px;
-  height: 35px;
-  opacity: 0;
-  z-index: 10000;
-
-  ::-webkit-calendar-picker-indicator {
-    position: absolute;
-    right: 0px;
-    width: 50px;
-    height: 23px;
-    z-index: 1000;
-  }
-
-  ::-webkit-calendar-picker-indicator:hover {
-    cursor: pointer;
-  }
-
-  ::-webkit-clear-button, .t-date-picker__input::-webkit-inner-spin-button {
-    display: none;
-    -webkit-appearance: none;
-  }
-`; 
 
 const DateText = styled.div`
   width: 62px;
@@ -60,13 +35,6 @@ const DateText = styled.div`
   align-items: center;
 `;
 
-const StartDatePicker = styled(DatePickerInput)`
-  margin-left: 10px;
-`;
-const EndDatePicker = styled(DatePickerInput)`
-  margin-left:85px;
-`;
-
 const StartDateText = styled(DateText)`
   margin-left: 10px;
 `;
@@ -74,11 +42,7 @@ const StartDateText = styled(DateText)`
 const EndDateText = styled(DateText)`
 `;
 
-const DayPickerRangeModal = styled.div`
-  position:relative;
-`;
-
-const RangeDatePicker = (props) => {
+const RangeDatePicker = () => {
 
   const [startDate, setStartDate] = useState(moment());
   const [endDate, setEndDate] = useState(moment());
@@ -98,13 +62,11 @@ const RangeDatePicker = (props) => {
   const render = () => {
     return (<div>
       <RangeDatePickerContainer onClick={() => { setIsOpen(true); }} className="position-relative d-flex align-items-center justify-content-between">
-        {/* <StartDatePicker type="date" onChange={onChangeStartDate} />
-      <EndDatePicker type="date" onChange={onChangeEndDate} /> */}
         <div className="d-flex align-items-center justify-content-center">
           <StartDateText>
             {moment(startDate).format("DD/MM/YYYY")}
           </StartDateText>
-          <div className="mx-1"> - </div>
+          <div className="mx-1 d-flex align-items-center justify-content-center" style={{ height: "100%" }}> - </div>
           <EndDateText>
             {moment(endDate).format("DD/MM/YYYY")}
           </EndDateText>

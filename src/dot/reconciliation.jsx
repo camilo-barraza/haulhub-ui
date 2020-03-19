@@ -12,9 +12,6 @@ import { loadMaterialOptions } from "./store/actions/tableActions";
 import Spinner from "./common/spinner";
 import { projectDetails as projectDetailsMockData } from "./mockData";
 import ProjectDetails from "./projectDetails";
-import moment from "moment";
-import { DayPickerRangeController } from "react-dates";
-
 
 const Container = styled.div`
   max-width: 1300px;
@@ -93,13 +90,8 @@ const Reconciliation = connect((state) => ({
     selectProject, 
     loadProjects 
   }) => {
-
     const [loadingProjectDetails, setLoadingProjectDetails] = useState(false);
     const [projectDetails, setProjectDetails] = useState({});
-    const [focusedInput, setFocusedInput] = useState("startDate");
-
-    const [startDate, setStartDate] = useState(moment().add({days:2}));
-    const [endDate, setEndDate] = useState(moment().add({ days: 4 }));
 
     useEffect(()=>{
       loadProjects();
@@ -119,15 +111,6 @@ const Reconciliation = connect((state) => ({
     useEffect(()=>{
       loadProjectDetails();
     },[selectedProject]);
-
-    const onFocusChange = (focusedInput) => { 
-      setFocusedInput(focusedInput || "startDate");
-    };
-
-    const onDatesChange = ({ startDate, endDate }) => {
-      setStartDate(startDate);
-      setEndDate(startDate && !endDate ? startDate : endDate);
-    };
 
     return (
       <Wrapper className="d-flex  justify-content-center">
@@ -149,21 +132,6 @@ const Reconciliation = connect((state) => ({
                   onChange={selectProject} 
                   menuOptions={menuOptions} ></Dropdown>
               </div>
-
-
-              {/* <div className='reconciliation'>
-                <DayPickerRangeController
-                  startDate={startDate}
-                  endDate={endDate}
-                  hideKeyboardShortcutsPanel={true}
-                  noBorder={true}
-                  focusedInput={focusedInput}
-                  onDatesChange={onDatesChange} 
-                  onFocusChange={onFocusChange}
-                  initialVisibleMonth={() => moment().add(2, "M")} 
-                />
-              </div> */}
-
               <RangeDatePicker/>
             </div>
             <ProjectDetailsContainer>
