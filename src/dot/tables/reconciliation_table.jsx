@@ -166,7 +166,8 @@ export const Rows = ({ tableType, data, onRender = () => {}, loadingData, loaded
 
   useEffect(() => {
     const scrollbarWidth = rowChildRef.current.parentNode.offsetWidth - rowChildRef.current.offsetWidth;
-    onRender(scrollbarWidth);
+    const isChrome = navigator.userAgent.search("Chrome") > 0;
+    onRender(isChrome? scrollbarWidth-1: scrollbarWidth);
   });
 
   const onScroll = () => {
