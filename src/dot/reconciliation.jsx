@@ -179,17 +179,17 @@ const Reconciliation = connect((state) => ({
               </div>
             </div>
 
-            <div style={{marginTop:"27px"}} className='w-100 d-flex d-flex align-items-center justify-content-between'>
+            <div style={{marginTop:"27px"}} className="w-100 d-flex d-flex align-items-center justify-content-between">
               <PreviousButton onClick={goToPrevious}> 
-                <i className='fa fa-caret-left mr-2'/> Previous
+                <i className="fa fa-caret-left mr-2"/> Previous
               </PreviousButton>
-              <div className='d-flex d-flex align-items-center justify-content-center'>
-                <ExportButton onClick={exportReconciliation}> <i className='fa fa-download mr-2' /> Export </ExportButton>
-                <ReconcileButton onClick={reconcile}> Reconcile <i className='fa fa-caret-right ml-2' />  </ReconcileButton>
+              <div className="d-flex d-flex align-items-center justify-content-center">
+                <ExportButton onClick={exportReconciliation}> <i className="fa fa-download mr-2" /> Export </ExportButton>
+                <ReconcileButton onClick={reconcile}> Reconcile <i className="fa fa-caret-right ml-2" />  </ReconcileButton>
               </div>
             </div>
 
-            <div style={{marginTop:"31px"}} className='d-flex align-items-end justify-content-between'>
+            <div style={{marginTop:"31px"}} className="d-flex align-items-end justify-content-between">
               <ProjectDetailsContainer>
                 {loadingProjectDetails ?
                   <Spinner />
@@ -198,7 +198,7 @@ const Reconciliation = connect((state) => ({
               <RangeDatePicker />
             </div>
             
-            <div style={{marginTop:"33px"}} className='w-100'>
+            <div style={{marginTop:"33px"}} className="w-100">
               <ReconciliationTable />
             </div>
             <div style={{ marginTop: "35px" }}>

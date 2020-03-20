@@ -20,19 +20,19 @@ const Value = styled.div`
 
 const ProjectDetails = ({ contract, aplicationDate, dueDate, billingDateRange }) => {
   return (<div>
-    <div className='d-flex'>
+    <div className="d-flex">
       <Field> Contract</Field>
       <Value>{contract}</Value>
     </div>
-    <div className='d-flex'>
+    <div className="d-flex">
       <Field> Aplication Date </Field>
       <Value>{aplicationDate}</Value>
     </div>
-    <div className='d-flex'>
+    <div className="d-flex">
       <Field> Due Date </Field>
       <Value>{dueDate}</Value>
     </div>
-    <div className='d-flex'>
+    <div className="d-flex">
       <Field> Billing Date Range </Field>
       <Value>{billingDateRange}</Value>
     </div>

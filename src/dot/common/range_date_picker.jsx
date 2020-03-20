@@ -77,7 +77,7 @@ const RangeDatePicker = () => {
   };
 
   const render = () => {
-    return (<div className='d-flex position-relative align-items-center justify-content-center'>
+    return (<div className="d-flex position-relative align-items-center justify-content-center">
       <Label> Date Filter </Label>
       <div>
         <RangeDatePickerContainer onClick={() => { setIsOpen(true); }} className="position-relative d-flex align-items-center justify-content-between">
@@ -95,8 +95,8 @@ const RangeDatePicker = () => {
           </DatePickerIcon>
         </RangeDatePickerContainer>
         {isOpen &&
-        <div className='reconciliation'>
-          <div className='position-absolute w-100 mt-2'>
+        <div className="reconciliation">
+          <div className="position-absolute w-100 mt-2">
             <DayPickerRangeController
               startDate={startDate}
               endDate={endDate}
@@ -110,7 +110,7 @@ const RangeDatePicker = () => {
           </div>
         </div>}
       </div>
-      <Button className='ml-3' onClick={setDefault}> <i className='fa fa-refresh mr-1'/> Default </Button>
+      <Button className="ml-3" onClick={setDefault}> <i className="fa fa-refresh mr-1"/> Default </Button>
     </div>
     );
   };
