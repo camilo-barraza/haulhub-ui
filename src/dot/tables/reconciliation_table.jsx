@@ -298,7 +298,7 @@ export default () => {
 
   const { selectedProject } = projectSelector;
   const { loading: loadingData, loadedLastPage, tableType, data } = reconciliationTable;
-  const { isTicketsPanelOpen } = ticketsPanel;
+  const { isOpen: isTicketsPanelOpen } = ticketsPanel;
 
   const [scrollbarWidth, setScrollbarWidth] = useState(0);
 
