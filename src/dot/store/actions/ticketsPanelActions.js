@@ -4,7 +4,7 @@ import { ticketDetailsData } from "../../mockData";
 
 export const openTicketsPanel = (dispatch) => {
   return (selectedItem, selectedFilter, selectedMaterial = "") => {
-    dispatchAPIActions(dispatchAPIActions, GET_TICKETS, () => new Promise(resolve => {
+    dispatchAPIActions(dispatch, GET_TICKETS, () => new Promise(resolve => {
       setTimeout(() => {
         resolve({
           data: ticketDetailsData
