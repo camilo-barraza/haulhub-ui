@@ -14,10 +14,11 @@ import {
   numberWithCommas } from "./reconciliation_table";
 import Dropdown from "../common/dropdown";
 import { loadTableFirstPage, loadTablePage } from "../store/actions/tableActions";
+import { openTicketsPanel } from "../store/actions/ticketsPanelActions";
 import Spinner from "../common/spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark as faRegularBookmark } from "@fortawesome/free-regular-svg-icons";
 
-
-const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
 const Material = styled.div`
   overflow: hidden;
@@ -62,24 +63,29 @@ const tableColumnWidths = [{
   subSectionWidths: ["100%"]
 }];
 
+const MATERIALS_FILTER = "MATERIALS_FILTER";
 
 const Row  = connect(state => ({
   menuOptions: state.materials.menuOptions.data,
-  loadingMenuOptions: state.materials.menuOptions.loading
-}) ) (
+  loadingMenuOptions: state.materials.menuOptions.loading,
+  isTicketDetailOpen: state.ticketsPanel.isOpen,
+  selectedFilter: state.ticketsPanel.selectedFilter,
+  selectedMaterial: state.ticketsPanel.selectedMaterial
+}), { openTicketsPanel }) (
   (props) => {
-    const [selectedItem, setSelectedItem] = useState(props.item);
+    const { item, openTicketsPanel, selectedFilter, selectedItem, selectedMaterial, material } = props; 
+    const [selectedMenuItem, setSelectedMenuItem] = useState(props.item);
 
     useEffect(() => {
-      setSelectedItem(props.item);
+      setSelectedMenuItem(props.item);
     }, [props.item]);
 
     const onChangeMaterial = (menuOption) => {
-      setSelectedItem(menuOption);
+      setSelectedMenuItem(menuOption);
       console.log(props.index, menuOption);
     };
 
-    return (<TableRow onClick={() => { alert(`clicked row ${props.item}`); }} isLast={props.isLast} className="d-flex">
+    return (<TableRow isSelected={material === selectedMaterial} isLast={props.isLast} className="d-flex">
       <TableSection borderless height={props.height} width={tableColumnWidths[0].sectionWidth}>
         <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}>
           {props.loadingMenuOptions? <div>
@@ -89,7 +95,7 @@ const Row  = connect(state => ({
               onDropdownOpen={props.onDropdownOpen}
               onDropdownClose={props.onDropdownClose}
               height="140px"
-              selectedValue={selectedItem}
+              selectedValue={selectedMenuItem}
               onChange={onChangeMaterial}
               width="114px"
               menuOptions={props.menuOptions}
@@ -97,14 +103,18 @@ const Row  = connect(state => ({
         </TableColumn>
         <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}>
           <Material>
-            {props.material}
+            {material}
           </Material>
         </TableColumn>
         <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[2]}> {props.unit} </TableColumn>
       </TableSection>
       <TableSection borderless height={props.height} width={tableColumnWidths[1].sectionWidth}>
-        <TableColumn align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
-          {numberWithCommas(props.workCompletedThisPeriod)} <i className="fa fa-bookmark ml-2"></i>
+        <TableColumn isClickable onClick={() => { openTicketsPanel(item, MATERIALS_FILTER, material); }}
+          align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
+          {numberWithCommas(props.workCompletedThisPeriod)} 
+          {selectedFilter === MATERIALS_FILTER && selectedMaterial === material?
+            <i className="fa fa-bookmark ml-2" /> :
+            <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
         </TableColumn>
       </TableSection>
       <TableSection borderless align="right" height={props.height} rightPadding="15px" width={tableColumnWidths[2].sectionWidth}>

@@ -8,8 +8,10 @@ import {
 
 import { ticketDetailsData } from "../../mockData";
 
-export const loadTickets = (itemId) => {
-  return dispatch => {
+export const openTicketsPanel = (selectedItem, selectedFilter, selectedMaterial = "") => {
+  return async dispatch => {
+
+    console.log(`loading tickets ${selectedFilter} for ${selectedItem}`);
     dispatch({
       types: [LOAD_TICKETS_REQUEST, LOAD_TICKETS_SUCCESS, LOAD_TICKETS_FAILURE],
       callAPI: () => new Promise(resolve => {
@@ -20,13 +22,10 @@ export const loadTickets = (itemId) => {
         }, 1000);
       })
     });
-  };
-};
 
-export const openTicketsPanel = () => {
-  return async dispatch => {
     dispatch({
-      type: OPEN_TICKETS_PANEL
+      type: OPEN_TICKETS_PANEL,
+      payload: { selectedItem, selectedFilter, selectedMaterial } 
     });
   };
 };

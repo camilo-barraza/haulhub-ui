@@ -3,8 +3,10 @@ import styled from "styled-components";
 import Spinner from "../common/spinner";
 import { connect } from "react-redux";
 import TicketPanel from "../tickets/ticket_panel";
-import { openTicketsPanel, loadTickets } from "../store/actions/ticketsPanelActions";
+import { openTicketsPanel } from "../store/actions/ticketsPanelActions";
 import { loadTableFirstPage, loadTablePage } from "../store/actions/tableActions";
+import { faBookmark as faRegularBookmark } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
@@ -33,13 +35,25 @@ const Column = styled.div`
   width: ${props => props.width};
   display: flex;
   align-items: center;
+  
+  ${props => {
+    return props.isClickable ? `-webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      :hover {
+        cursor: pointer;
+        opacity: 0.7;
+      }` : ""; }}
 `;
 
 export const SectionHeader = styled(Column)`
   font-size: 12px;
   width: 100%;
   color: #6D547F;
-  font-weight: bold;
+  font-weight: 600;
 `;
 
 const ColumnHeader = styled(Column)`
@@ -47,7 +61,7 @@ const ColumnHeader = styled(Column)`
   font-size: 12px;
   display: flex;
   align-items: center;
-  font-weight: ${props => {return props.normalFontWeight? "normal" : "bold";}};
+  font-weight: ${props => {return props.normalFontWeight? "normal" : "600";}};
 `;
 
 export const Headers = styled.div`
@@ -92,7 +106,7 @@ const TableData = styled.div`
 
 export const TableColumn = (props) => {
   const { width, align } = props;
-  return (<Column width={width}>
+  return (<Column onClick={props.onClick} isClickable={props.isClickable} width={width}>
     <TableColumnContent align={align}>
       <TableData>
         {props.children}
@@ -122,14 +136,8 @@ export const TableRow = styled.div`
   text-align: center;
   border-bottom: ${props => { return !props.isLast ? "1px solid #EAE7ED" : ""; }} ;
   background-color: color ;
-  font-weight: ${props => {return props.isSelected? "bold": "normal";}};
+  font-weight: ${props => {return props.isSelected? "600": "normal";}};
   border: ${props => { return props.isSelected ? "dotted 0.1px #7D45A4": "";}} ;
-
-  :hover {
-    cursor: pointer;
-    background-color: #FCFDFF ;
-    font-weight: bold !important;
-  }
 `;
 
 export const RowsContainer = styled.div`
@@ -218,33 +226,26 @@ const tableColumnWidths = [{
   subSectionWidths: ["33%", "33%", "33%"]
 }];
 
+const ticketFilters = {
+  PREVIOUS_PERIOD: "PREVIOUS_PERIOD",
+  THIS_PERIOD: "THIS_PERIOD",
+  TOTAL_COMPLETED: "TOTAL_COMPLETED",
+};
+
 
 const Row = connect(state => ({
   selectedProject: state.projectSelector.selectedProject,
-  isTicketDetailOpen: state.ticketsPanel.isOpen
-}), { 
-  openTicketsPanel,
-  loadTickets
-}) (
+  isTicketDetailOpen: state.ticketsPanel.isOpen,
+  selectedFilter: state.ticketsPanel.selectedFilter,
+  selectedItem: state.ticketsPanel.selectedItem
+}), { openTicketsPanel }) (
   (props) => {
-    const [rowIsSelected, setRowIsSelected] = useState();
-
-    useEffect(() => {
-      if (!props.isTicketDetailOpen)
-        setRowIsSelected(false);
-    }, [props.isTicketDetailOpen]);
-
-    const showTicketDetail = () => {
-      setRowIsSelected(true);
-      props.loadTickets();
-      props.openTicketsPanel();
-    };
-
+    const { item, openTicketsPanel, selectedFilter, selectedItem } = props;
     return (<div>
-      <TableRow isSelected={rowIsSelected} onClick={showTicketDetail} isLast={props.isLast} className="d-flex">
+      <TableRow isSelected={item === selectedItem}  isLast={props.isLast} className="d-flex">
         <TableSection height={props.height} width={tableColumnWidths[0].sectionWidth}>
           <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}> {props.line} </TableColumn>
-          <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}> {props.item} </TableColumn>
+          <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}> {item} </TableColumn>
           <TableColumn width={tableColumnWidths[0].subSectionWidths[2]}>
             <RowDescription title={props.description}> {props.description} </RowDescription>
           </TableColumn>
@@ -252,16 +253,28 @@ const Row = connect(state => ({
           <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[4]}> {props.unit} </TableColumn>
         </TableSection>
         <TableSection height={props.height} width={tableColumnWidths[1].sectionWidth}>
-          <TableColumn align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
-            {numberWithCommas(props.previousPeriod)} <i className="fa fa-bookmark ml-2"></i>
+          <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.PREVIOUS_PERIOD); }}
+            isClickable align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
+            {numberWithCommas(props.previousPeriod)} 
+            {selectedFilter === ticketFilters.PREVIOUS_PERIOD && selectedItem === item? 
+              <i className="fa fa-bookmark ml-2"/>:
+              <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
           </TableColumn>
-          <TableColumn align="right" width={tableColumnWidths[1].subSectionWidths[1]}>
-            {numberWithCommas(props.thisPeriod)} <i className="fa fa-bookmark ml-2"></i>
+          <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.THIS_PERIOD); }}
+            isClickable align="right" width={tableColumnWidths[1].subSectionWidths[1]}>
+            {numberWithCommas(props.thisPeriod)}  
+            {selectedFilter === ticketFilters.THIS_PERIOD && selectedItem === item?
+              <i className="fa fa-bookmark ml-2" /> :
+              <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
           </TableColumn>
         </TableSection>
         <TableSection height={props.height} borderless width={tableColumnWidths[2].subSectionWidths[0]}>
-          <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
-            {numberWithCommas(props.totalCompletedStoredToDate)} <i className="fa fa-bookmark ml-2"></i>
+          <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.TOTAL_COMPLETED); }}
+            isClickable align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
+            {numberWithCommas(props.totalCompletedStoredToDate)} 
+            {selectedFilter === ticketFilters.TOTAL_COMPLETED && selectedItem === item?
+              <i className="fa fa-bookmark ml-2" /> :
+              <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
           </TableColumn>
           <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[1]}> {props.percentComplete}%</TableColumn>
           <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[2]}> {numberWithCommas(props.balanceToFinish)}  </TableColumn>
@@ -331,6 +344,7 @@ export default connect((state) => ({
         </TableSection>
       </Headers>
       <Rows 
+        maxHeight={"356px"}
         onRender={onRenderRows}
         tableType={tableType}
         data={data}

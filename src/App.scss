@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap');
+
+.reconciliation{
+  .CalendarDay__selected_span {
+    color: #461C63;
+    background: #EDEBF3;
+    border: solid 1px #A28EB2;
+
+    &:hover{
+      background: #705385 !important;
+      color: white !important;
+      border: solid 1px #A28EB2 !important;
+    }
+  }
+
+  .CalendarDay__selected {
+    background: #461C63;
+    color: white;
+    border: solid 1px #A28EB2;
+  }
+
+  .CalendarDay__selected:hover, .CalendarDay__selected_span:active {
+    background: #705385 !important;
+    color: white !important;
+    border: solid 1px #A28EB2 !important;
+  }
+
+  .CalendarDay__hovered_span:hover, .CalendarDay__hovered_span {
+    background: #4E286B;
+    border: solid 1px #A28EB2;
+    color:white;
+  }
+} 

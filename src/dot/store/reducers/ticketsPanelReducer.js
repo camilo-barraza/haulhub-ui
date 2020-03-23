@@ -7,6 +7,9 @@ export const LOAD_TICKETS_FAILURE = "LOAD_TICKETS_FAILURE";
 
 export default (state = {
   isOpen: false,
+  selectedItem: "",
+  selectedFilter: "",
+  selectedMaterial: "",
   data: {
     loading: false,
     tickets: []
@@ -16,11 +19,17 @@ export default (state = {
   case OPEN_TICKETS_PANEL:
     return {
       ...state,
+      selectedItem: action.payload.selectedItem,
+      selectedFilter: action.payload.selectedFilter,
+      selectedMaterial: action.payload.selectedMaterial,
       isOpen: true
     };
   case CLOSE_TICKETS_PANEL:
     return {
       ...state,
+      selectedItem:"",
+      selectedFilter:"",
+      selectedMaterial: "",
       isOpen: false
     };
   case LOAD_TICKETS_REQUEST:

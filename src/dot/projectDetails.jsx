@@ -7,14 +7,14 @@ const Field = styled.div`
   color: #808080;
   width: 147px;
   text-align: left;
-  font-weight: bold;
+  font-weight: 600;
 `;
 
 const Value = styled.div`
   font-family: "Open Sans", sans-serif;
   font-size: 12px;
   color: #461C63;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 7px;
 `;
 

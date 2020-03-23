@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
-import "./App.css";
+import "./App.scss";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

@@ -17,16 +17,15 @@ const Container = styled.div`
   max-width: 1300px;
   padding: 15px 40px;
   font-family: "Open Sans", sans-serif;
-
 `;
 
 const Wrapper = styled.div`
   background-color: #FCFDFF;
-  width:100vw;
+  width:100%;
   height: 1400px;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-bottom: 100px;
+  padding-bottom: 100px;
 `;
 
 const SelectProjectText = styled.div`
@@ -51,6 +50,7 @@ const LoadingProjects = styled.div`
 
 const ProjectDetailsContainer = styled.div`
   width: 400px;
+  height: 102px;
   display: flex;
   align-items: center;
   text-align: center;
@@ -62,7 +62,7 @@ const Button = styled.div`
   border-radius: 6px;
   font-family: "Open Sans", sans-serif;
   display: flex;
-  font-weight: bold;
+  font-weight: 600;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -184,7 +184,9 @@ const Reconciliation = connect((state) => ({
                 <i className="fa fa-caret-left mr-2"/> Previous
               </PreviousButton>
               <div className="d-flex d-flex align-items-center justify-content-center">
-                <ExportButton onClick={exportReconciliation}> <i className="fa fa-download mr-2" /> Export </ExportButton>
+                <ExportButton onClick={exportReconciliation}> 
+                  <i className="fa fa-download mr-2" style={{marginTop:"3px"}} /> Export 
+                </ExportButton>
                 <ReconcileButton onClick={reconcile}> Reconcile <i className="fa fa-caret-right ml-2" />  </ReconcileButton>
               </div>
             </div>

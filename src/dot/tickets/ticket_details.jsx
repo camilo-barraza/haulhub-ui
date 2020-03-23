@@ -152,14 +152,20 @@ const Header = styled.div`
 `;
 
 const TicketDetails = connect(state => ({ 
-  data: state.ticketsPanel.data
+  data: state.ticketsPanel.data,
+  selectedItem: state.ticketsPanel.selectedItem,
+  selectedMaterial: state.ticketsPanel.selectedMaterial,
+  selectedFilter: state.ticketsPanel.selectedFilter
 }))(
-  ( { data: { loading, tickets } } ) => {
+  ({ selectedItem, selectedMaterial,  selectedFilter, data: { loading, tickets } } ) => {
     return (<div className="w-100">
       <Header> 
         <i className="mr-2 fa fa-bookmark"></i>
-      Tickets 
+      Tickets for {selectedItem? selectedItem : selectedMaterial}
       </Header>
+      <FieldTitle>
+        {selectedFilter}
+      </FieldTitle>
       {loading && <div className="d-flex align-items-center justify-content-center mt-5">
         <Spinner/>
       </div>}

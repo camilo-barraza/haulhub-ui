@@ -7,6 +7,7 @@ const RangeDatePickerContainer = styled.div`
   width: 180px;
   border: solid 1px #ECEBEF ;
   height:30;
+  font-weight: 600;
   border-radius: 6px;
   background-color: #FCFDFF;
   -webkit-touch-callout: none;
@@ -33,6 +34,15 @@ const DateText = styled.div`
   height: 30px;
   display: flex;
   align-items: center;
+`;
+
+const EndDate = styled(DateText)`
+  margin-left: 5px;
+`;
+
+const StartDate = styled(DateText)`
+  margin-left: 8px;
+  margin-right: 5px;
 `;
 
 const Label = styled.div`
@@ -82,13 +92,13 @@ const RangeDatePicker = () => {
       <div>
         <RangeDatePickerContainer onClick={() => { setIsOpen(true); }} className="position-relative d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center justify-content-center">
-            <DateText style={{ marginLeft: "10px" }}>
+            <StartDate>
               {moment(startDate).format("DD/MM/YYYY")}
-            </DateText>
-            <div className="mx-1 d-flex align-items-center justify-content-center" style={{ height: "100%" }}> - </div>
-            <DateText >
+            </StartDate>
+            <div className="d-flex align-items-center justify-content-center" style={{marginBottom:"5px"}}> - </div>
+            <EndDate>
               {moment(endDate).format("DD/MM/YYYY")}
-            </DateText>
+            </EndDate>
           </div>
           <DatePickerIcon >
             <i className="fa fa-calendar mr-2" />

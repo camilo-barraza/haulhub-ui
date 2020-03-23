@@ -73,7 +73,7 @@ const DropdownMenuItem = styled.div`
   font-weight: normal;
 
   :hover {
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
   }
 `;
@@ -118,7 +118,7 @@ const SelectorText = styled.div`
   -moz-hyphens: auto;
   hyphens: auto;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 600;
   text-align:left;
   width: 90%;
 `;
@@ -187,7 +187,7 @@ const SearchInput = styled.input`
   font-family: "Open Sans", sans-serif;
   font-size: 12px;
   color: #808080;
-  font-weight: bold;
+  font-weight: 600;
   padding:0 1em 0 30px;
   /* border:none; */
   outline:none;
