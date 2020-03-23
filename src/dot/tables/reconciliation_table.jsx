@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Spinner from "../common/spinner";
-import { connect } from "react-redux";
 import TicketPanel from "../tickets/ticket_panel";
-import { openTicketsPanel } from "../store/actions/ticketsPanelActions";
-import { loadTableFirstPage, loadTablePage } from "../store/actions/tableActions";
 import { faBookmark as faRegularBookmark } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReconciliationContext } from "../reconciliation"; 
 
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
@@ -233,124 +231,122 @@ const ticketFilters = {
 };
 
 
-const Row = connect(state => ({
-  selectedProject: state.projectSelector.selectedProject,
-  isTicketDetailOpen: state.ticketsPanel.isOpen,
-  selectedFilter: state.ticketsPanel.selectedFilter,
-  selectedItem: state.ticketsPanel.selectedItem
-}), { openTicketsPanel }) (
-  (props) => {
-    const { item, openTicketsPanel, selectedFilter, selectedItem } = props;
-    return (<div>
-      <TableRow isSelected={item === selectedItem}  isLast={props.isLast} className="d-flex">
-        <TableSection height={props.height} width={tableColumnWidths[0].sectionWidth}>
-          <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}> {props.line} </TableColumn>
-          <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}> {item} </TableColumn>
-          <TableColumn width={tableColumnWidths[0].subSectionWidths[2]}>
-            <RowDescription title={props.description}> {props.description} </RowDescription>
-          </TableColumn>
-          <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[3]}> {numberWithCommas(props.bidQuantity)} </TableColumn>
-          <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[4]}> {props.unit} </TableColumn>
-        </TableSection>
-        <TableSection height={props.height} width={tableColumnWidths[1].sectionWidth}>
-          <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.PREVIOUS_PERIOD); }}
-            isClickable align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
-            {numberWithCommas(props.previousPeriod)} 
-            {selectedFilter === ticketFilters.PREVIOUS_PERIOD && selectedItem === item? 
-              <i className="fa fa-bookmark ml-2"/>:
-              <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
-          </TableColumn>
-          <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.THIS_PERIOD); }}
-            isClickable align="right" width={tableColumnWidths[1].subSectionWidths[1]}>
-            {numberWithCommas(props.thisPeriod)}  
-            {selectedFilter === ticketFilters.THIS_PERIOD && selectedItem === item?
-              <i className="fa fa-bookmark ml-2" /> :
-              <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
-          </TableColumn>
-        </TableSection>
-        <TableSection height={props.height} borderless width={tableColumnWidths[2].subSectionWidths[0]}>
-          <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.TOTAL_COMPLETED); }}
-            isClickable align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
-            {numberWithCommas(props.totalCompletedStoredToDate)} 
-            {selectedFilter === ticketFilters.TOTAL_COMPLETED && selectedItem === item?
-              <i className="fa fa-bookmark ml-2" /> :
-              <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
-          </TableColumn>
-          <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[1]}> {props.percentComplete}%</TableColumn>
-          <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[2]}> {numberWithCommas(props.balanceToFinish)}  </TableColumn>
-        </TableSection>
-      </TableRow>
-    </div>);
-  });
+const Row = (props) => {
+  const [{
+    ticketsPanel
+  },
+  {
+    openTicketsPanel
+  }] = useContext(ReconciliationContext);
+
+  const { selectedFilter, selectedItem } = ticketsPanel;
+  const { item } = props;
+
+  return (<div>
+    <TableRow isSelected={item === selectedItem}  isLast={props.isLast} className="d-flex">
+      <TableSection height={props.height} width={tableColumnWidths[0].sectionWidth}>
+        <TableColumn width={tableColumnWidths[0].subSectionWidths[0]}> {props.line} </TableColumn>
+        <TableColumn width={tableColumnWidths[0].subSectionWidths[1]}> {item} </TableColumn>
+        <TableColumn width={tableColumnWidths[0].subSectionWidths[2]}>
+          <RowDescription title={props.description}> {props.description} </RowDescription>
+        </TableColumn>
+        <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[3]}> {numberWithCommas(props.bidQuantity)} </TableColumn>
+        <TableColumn align="right" width={tableColumnWidths[0].subSectionWidths[4]}> {props.unit} </TableColumn>
+      </TableSection>
+      <TableSection height={props.height} width={tableColumnWidths[1].sectionWidth}>
+        <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.PREVIOUS_PERIOD); }}
+          isClickable align="right" width={tableColumnWidths[1].subSectionWidths[0]}>
+          {numberWithCommas(props.previousPeriod)} 
+          {selectedFilter === ticketFilters.PREVIOUS_PERIOD && selectedItem === item? 
+            <i className="fa fa-bookmark ml-2"/>:
+            <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
+        </TableColumn>
+        <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.THIS_PERIOD); }}
+          isClickable align="right" width={tableColumnWidths[1].subSectionWidths[1]}>
+          {numberWithCommas(props.thisPeriod)}  
+          {selectedFilter === ticketFilters.THIS_PERIOD && selectedItem === item?
+            <i className="fa fa-bookmark ml-2" /> :
+            <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
+        </TableColumn>
+      </TableSection>
+      <TableSection height={props.height} borderless width={tableColumnWidths[2].subSectionWidths[0]}>
+        <TableColumn onClick={() => { openTicketsPanel(item, ticketFilters.TOTAL_COMPLETED); }}
+          isClickable align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
+          {numberWithCommas(props.totalCompletedStoredToDate)} 
+          {selectedFilter === ticketFilters.TOTAL_COMPLETED && selectedItem === item?
+            <i className="fa fa-bookmark ml-2" /> :
+            <FontAwesomeIcon className='ml-2' icon={faRegularBookmark} />}
+        </TableColumn>
+        <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[1]}> {props.percentComplete}%</TableColumn>
+        <TableColumn align="right" width={tableColumnWidths[2].subSectionWidths[2]}> {numberWithCommas(props.balanceToFinish)}  </TableColumn>
+      </TableSection>
+    </TableRow>
+  </div>);
+};
 
 
-export default connect((state) => ({
-  selectedProject: state.projectSelector.selectedProject,
-  isTicketsPanelOpen: state.ticketsPanel.isOpen,
-  loadingData: state.reconciliationTable.loading,
-  loadedLastPage: state.reconciliationTable.loadedLastPage,
-  tableType: state.reconciliationTable.tableType,
-  data: state.reconciliationTable.data,
-}), {
-  loadTableFirstPage, loadTablePage
-}) (
-  ({ 
-    selectedProject, 
-    tableType, 
-    data, 
-    isTicketsPanelOpen, 
-    loadingData, 
-    loadedLastPage, 
-    loadTableFirstPage, 
-    loadTablePage 
-  }) => {
-    const [scrollbarWidth, setScrollbarWidth] = useState(0);
+export default () => {
+  const [{
+    projectSelector,
+    ticketsPanel,
+    reconciliationTable
+  },
+  {
+    loadTableFirstPage,
+    loadTablePage
+  }] = useContext(ReconciliationContext);
 
-    useEffect(()=>{
-      if(selectedProject !== "")
-        loadTableFirstPage(tableType);
-    },[selectedProject]);
+  const { selectedProject } = projectSelector;
+  const { loading: loadingData, loadedLastPage, tableType, data } = reconciliationTable;
+  const { isTicketsPanelOpen } = ticketsPanel;
 
-    const onRenderRows = (_scrollbarWidth) => {
-      if(scrollbarWidth !== _scrollbarWidth)
-        setScrollbarWidth(_scrollbarWidth);
-    };
+  const [scrollbarWidth, setScrollbarWidth] = useState(0);
 
-    return (<Container>
-      <Headers scrollbarWidth={scrollbarWidth}>
-        <TicketPanel isOpen={isTicketsPanelOpen} />
-        <TableSection width={tableColumnWidths[0].sectionWidth}>
-          <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
-          <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[1]}> Item </TableColumnHeader>
-          <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[2]}> Description </TableColumnHeader>
-          <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[3]}> Bid Quantity </TableColumnHeader>
-          <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[4]}> Unit </TableColumnHeader>
-        </TableSection>
-        <TableSection className="d-flex flex-column align-items-center justify-content-center" width={tableColumnWidths[1].sectionWidth}>
-          <SectionHeader className="d-flex align-items-center justify-content-center"> Work Completed </SectionHeader>
-          <SectionSubheaders>
-            <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[0]}> Previous Period </TableColumnHeader>
-            <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[1]}> This Period </TableColumnHeader>
-          </SectionSubheaders>
-        </TableSection>
-        <TableSection borderless width={tableColumnWidths[2].subSectionWidths[0]}>
-          <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
-            <div className="text-center" style={{ width: "90px" }}> Total Completed Stored to Date </div>
-          </TableColumnHeader>
-          <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[1]}> % Complete </TableColumnHeader>
-          <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[2]}>
-            <div style={{ width: "60px" }}> Balance to Finish </div>
-          </TableColumnHeader>
-        </TableSection>
-      </Headers>
-      <Rows 
-        maxHeight={"356px"}
-        onRender={onRenderRows}
-        tableType={tableType}
-        data={data}
-        loadData={loadTablePage} 
-        loadingData={loadingData} 
-        loadedLastPage={loadedLastPage} 
-        RowLayout={Row} />
-    </Container>);
-  });
+  useEffect(()=>{
+    if(selectedProject !== "")
+      loadTableFirstPage(tableType);
+  },[selectedProject]);
+
+  const onRenderRows = (_scrollbarWidth) => {
+    if(scrollbarWidth !== _scrollbarWidth)
+      setScrollbarWidth(_scrollbarWidth);
+  };
+
+  return (<Container>
+    <Headers scrollbarWidth={scrollbarWidth}>
+      <TicketPanel isOpen={isTicketsPanelOpen} />
+      <TableSection width={tableColumnWidths[0].sectionWidth}>
+        <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[0]}> Line </TableColumnHeader>
+        <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[1]}> Item </TableColumnHeader>
+        <TableColumnHeader width={tableColumnWidths[0].subSectionWidths[2]}> Description </TableColumnHeader>
+        <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[3]}> Bid Quantity </TableColumnHeader>
+        <TableColumnHeader align="right" width={tableColumnWidths[0].subSectionWidths[4]}> Unit </TableColumnHeader>
+      </TableSection>
+      <TableSection className="d-flex flex-column align-items-center justify-content-center" width={tableColumnWidths[1].sectionWidth}>
+        <SectionHeader className="d-flex align-items-center justify-content-center"> Work Completed </SectionHeader>
+        <SectionSubheaders>
+          <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[0]}> Previous Period </TableColumnHeader>
+          <TableColumnHeader normalFontWeight align="right" width={tableColumnWidths[1].subSectionWidths[1]}> This Period </TableColumnHeader>
+        </SectionSubheaders>
+      </TableSection>
+      <TableSection borderless width={tableColumnWidths[2].subSectionWidths[0]}>
+        <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[0]}>
+          <div className="text-center" style={{ width: "90px" }}> Total Completed Stored to Date </div>
+        </TableColumnHeader>
+        <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[1]}> % Complete </TableColumnHeader>
+        <TableColumnHeader align="right" width={tableColumnWidths[2].subSectionWidths[2]}>
+          <div style={{ width: "60px" }}> Balance to Finish </div>
+        </TableColumnHeader>
+      </TableSection>
+    </Headers>
+    <Rows 
+      maxHeight={"356px"}
+      onRender={onRenderRows}
+      tableType={tableType}
+      data={data}
+      loadData={loadTablePage} 
+      loadingData={loadingData} 
+      loadedLastPage={loadedLastPage} 
+      RowLayout={Row} />
+  </Container>);
+};

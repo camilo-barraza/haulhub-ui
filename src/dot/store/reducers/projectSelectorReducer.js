@@ -1,7 +1,6 @@
+import { REQUEST, SUCCESS, FAILURE } from "../utils";
 export const SELECT_PROJECT = "SELECT_PROJECT";
-export const LOAD_PROJECTS_REQUEST = "LOAD_PROJECTS_REQUEST";
-export const LOAD_PROJECTS_SUCCESS = "LOAD_PROJECTS_SUCCESS";
-export const LOAD_PROJECTS_FAILURE = "LOAD_PROJECTS_FAILURE";
+export const GET_PROJECTS = "GET_PROJECTS";
 
 export default (state = {
   selectedProject: "",
@@ -9,18 +8,18 @@ export default (state = {
   loading: false
 }, action) => {
   switch (action.type) {
-  case LOAD_PROJECTS_REQUEST:
+  case `${GET_PROJECTS}_${REQUEST}`:
     return {
       ...state,
       loading:true
     };
-  case LOAD_PROJECTS_SUCCESS:
+  case `${GET_PROJECTS}_${SUCCESS}`:
     return {
       loading: false,
-      menuOptions: action.response.data,
-      selectedProject: action.response.data[0]
+      menuOptions: action.payload.data,
+      selectedProject: action.payload.data[0]
     };
-  case LOAD_PROJECTS_FAILURE:
+  case `${GET_PROJECTS}_${FAILURE}`:
     return {
       ...state,
       loading: false

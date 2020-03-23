@@ -1,8 +1,7 @@
+import { REQUEST, SUCCESS, FAILURE } from "../utils";
 import tableReducer from "./tableReducer";
 
-export const LOAD_MATERIALS_OPTIONS_REQUEST = "LOAD_MATERIALS_OPTIONS_REQUEST";
-export const LOAD_MATERIALS_OPTIONS_SUCCESS = "LOAD_MATERIALS_OPTIONS_SUCCESS";
-export const LOAD_MATERIALS_OPTIONS_FAILURE = "LOAD_MATERIALS_OPTIONS_FAILURE";
+export const GET_MATERIALS_OPTIONS = "GET_MATERIAL_OPTIONS";
 
 export default (state = {}, action) => {
   return {
@@ -16,18 +15,18 @@ const menuOptionsReducer = (state = {
   data: []
 }, action) => {
   switch (action.type) {
-  case LOAD_MATERIALS_OPTIONS_REQUEST:
+  case `${GET_MATERIALS_OPTIONS}_${REQUEST}`:
     return {
       ...state,
       loading: true
     };
-  case LOAD_MATERIALS_OPTIONS_SUCCESS:
+  case `${GET_MATERIALS_OPTIONS}_${SUCCESS}`:
     return {
       ...state,
-      data: action.response.data,
+      data: action.payload.data,
       loading: false
     };
-  case LOAD_MATERIALS_OPTIONS_FAILURE:
+  case `${GET_MATERIALS_OPTIONS}_${FAILURE}`:
     return {
       ...state,
       data: [],

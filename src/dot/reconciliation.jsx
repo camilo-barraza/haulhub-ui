@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState, useContext } from "react";
 import ReconciliationTable from "./tables/reconciliation_table";
 import styled from "styled-components";
 import MaterialsTable from "./tables/materials_table";
 import Dropdown from "./common/dropdown";
 import RangeDatePicker from "./common/range_date_picker";
-import { Provider } from "react-redux";
-import store from "./store/store";
-import { selectProject, loadProjects } from "./store/actions/projectSelectorActions";
-import { loadMaterialOptions } from "./store/actions/tableActions";
+import { useStore } from "./store/store";
 import Spinner from "./common/spinner";
 import { projectDetails as projectDetailsMockData } from "./mockData";
 import ProjectDetails from "./projectDetails";
+import ContextDevTool from "react-context-devtool";
+
 
 const Container = styled.div`
   max-width: 1300px;
@@ -98,123 +96,121 @@ const ReconcileButton = styled(Button)`
 
 var sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
-const Reconciliation = connect((state) => ({
-  menuOptions: state.projectSelector.menuOptions,
-  loadingProjects: state.projectSelector.loading,
-  selectedProject: state.projectSelector.selectedProject,
-  isReconciliationTableLoading: state.reconciliationTable.loading,
-  isMaterialsTableLoading: state.materials.table.loading,
-}), { 
-  loadProjects,
-  selectProject,
-  loadMaterialOptions
-}) ( 
-  ({ 
-    isMaterialsTableLoading,
-    isReconciliationTableLoading,
-    loadMaterialOptions, 
-    loadingProjects, 
-    selectedProject, 
-    menuOptions, 
-    selectProject, 
-    loadProjects 
-  }) => {
-    const [loadingProjectDetails, setLoadingProjectDetails] = useState(false);
-    const [projectDetails, setProjectDetails] = useState({});
+const Reconciliation = () => {
+  const [{
+    projectSelector,
+    reconciliationTable,
+    materials,
+  },
+  {
+    loadMaterialOptions,
+    selectProject,
+    loadProjects
+  }] = useContext(ReconciliationContext);
 
-    useEffect(()=>{
-      window.scrollTo(0,0);
-      loadProjects();
-      loadMaterialOptions();
-    }, []);
+  const { menuOptions, loading: loadingProjects, selectedProject } = projectSelector;
+  const { loading:isReconciliationTableLoading } = reconciliationTable;
+  const { table: { loading: isMaterialsTableLoading } } = materials;
 
-    const loadProjectDetails = async () => {
-      // emulate network
-      setLoadingProjectDetails(true);
-      await sleep(1000);
-      // selectedProject as param for api request
+  const [loadingProjectDetails, setLoadingProjectDetails] = useState(false);
+  const [projectDetails, setProjectDetails] = useState({});
 
-      setProjectDetails(projectDetailsMockData);
-      setLoadingProjectDetails(false);
-    };
+  useEffect(()=>{
+    window.scrollTo(0,0);
+    loadProjects();
+    loadMaterialOptions();
+  }, []);
 
-    useEffect(()=>{
-      window.scrollTo(0,0);
-    }, [selectedProject]);
+  const loadProjectDetails = async () => {
+    // emulate network
+    setLoadingProjectDetails(true);
+    await sleep(1000);
+    // selectedProject as param for api request
 
-    useEffect(()=>{
-      loadProjectDetails();
-    },[selectedProject]);
+    setProjectDetails(projectDetailsMockData);
+    setLoadingProjectDetails(false);
+  };
 
-    const goToPrevious = () => {
-      console.log("clicked go to previous");
-    };
+  useEffect(()=>{
+    window.scrollTo(0,0);
+  }, [selectedProject]);
 
-    const reconcile = () => {
-      console.log("clicked reconcile");
-    };
+  useEffect(()=>{
+    loadProjectDetails();
+  },[selectedProject]);
 
-    const exportReconciliation = () => {
-      console.log("clicked on export");
-    };
+  const goToPrevious = () => {
+    console.log("clicked go to previous");
+  };
+
+  const reconcile = () => {
+    console.log("clicked reconcile");
+  };
+
+  const exportReconciliation = () => {
+    console.log("clicked on export");
+  };
     
-    return (
-      <Wrapper className="d-flex  justify-content-center">
-        {loadingProjects? <LoadingProjects>
-          <div style={{marginTop:"300px"}}>
-            <Spinner/>
+  return (
+    <Wrapper className="d-flex  justify-content-center">
+      {loadingProjects? <LoadingProjects>
+        <div style={{marginTop:"300px"}}>
+          <Spinner/>
+        </div>
+      </LoadingProjects>
+        :
+        <Container className="w-100">
+
+          <div style={{marginTop: "15px"}} className="d-flex w-100 justify-content-between align-items-center">
+            <div className="d-flex align-items-center justify-content-center">
+              <SelectProjectText className="mr-3"> Select Project </SelectProjectText>
+              <Dropdown 
+                disabled={isReconciliationTableLoading || isMaterialsTableLoading}
+                selectedValue={selectedProject}
+                onChange={selectProject} 
+                menuOptions={menuOptions} ></Dropdown>
+            </div>
           </div>
-        </LoadingProjects>
-          :
-          <Container className="w-100">
 
-            <div style={{marginTop: "15px"}} className="d-flex w-100 justify-content-between align-items-center">
-              <div className="d-flex align-items-center justify-content-center">
-                <SelectProjectText className="mr-3"> Select Project </SelectProjectText>
-                <Dropdown 
-                  disabled={isReconciliationTableLoading || isMaterialsTableLoading}
-                  selectedValue={selectedProject}
-                  onChange={selectProject} 
-                  menuOptions={menuOptions} ></Dropdown>
-              </div>
+          <div style={{marginTop:"27px"}} className="w-100 d-flex d-flex align-items-center justify-content-between">
+            <PreviousButton onClick={goToPrevious}> 
+              <i className="fa fa-caret-left mr-2"/> Previous
+            </PreviousButton>
+            <div className="d-flex d-flex align-items-center justify-content-center">
+              <ExportButton onClick={exportReconciliation}> 
+                <i className="fa fa-download mr-2" style={{marginTop:"3px"}} /> Export 
+              </ExportButton>
+              <ReconcileButton onClick={reconcile}> Reconcile <i className="fa fa-caret-right ml-2" />  </ReconcileButton>
             </div>
+          </div>
 
-            <div style={{marginTop:"27px"}} className="w-100 d-flex d-flex align-items-center justify-content-between">
-              <PreviousButton onClick={goToPrevious}> 
-                <i className="fa fa-caret-left mr-2"/> Previous
-              </PreviousButton>
-              <div className="d-flex d-flex align-items-center justify-content-center">
-                <ExportButton onClick={exportReconciliation}> 
-                  <i className="fa fa-download mr-2" style={{marginTop:"3px"}} /> Export 
-                </ExportButton>
-                <ReconcileButton onClick={reconcile}> Reconcile <i className="fa fa-caret-right ml-2" />  </ReconcileButton>
-              </div>
-            </div>
-
-            <div style={{marginTop:"31px"}} className="d-flex align-items-end justify-content-between">
-              <ProjectDetailsContainer>
-                {loadingProjectDetails ?
-                  <Spinner />
-                  : <ProjectDetails {...projectDetails} />}
-              </ProjectDetailsContainer>
-              <RangeDatePicker />
-            </div>
+          <div style={{marginTop:"31px"}} className="d-flex align-items-end justify-content-between">
+            <ProjectDetailsContainer>
+              {loadingProjectDetails ?
+                <Spinner />
+                : <ProjectDetails {...projectDetails} />}
+            </ProjectDetailsContainer>
+            <RangeDatePicker />
+          </div>
             
-            <div style={{marginTop:"33px"}} className="w-100">
-              <ReconciliationTable />
-            </div>
-            <div style={{ marginTop: "35px" }}>
-              <MaterialsTable/>
-            </div>
-          </Container>}
-      </Wrapper>);
-  }
-);
+          <div style={{marginTop:"33px"}} className="w-100">
+            <ReconciliationTable />
+          </div>
+          <div style={{ marginTop: "35px" }}>
+            <MaterialsTable/>
+          </div>
+        </Container>}
+    </Wrapper>);
+};
+
+export const ReconciliationContext = React.createContext();
 
 const ReconciliationPage = () => {
-  return (< Provider store={store}>
+  return (<ReconciliationContext.Provider value={useStore()}>
+    <ContextDevTool context={ReconciliationContext} id="unique-id" displayName="ReconciliationContext" />
     <Reconciliation />
-  </ Provider>);
+    <div>hey</div>
+  </ReconciliationContext.Provider>);
 };
 
 export default ReconciliationPage;

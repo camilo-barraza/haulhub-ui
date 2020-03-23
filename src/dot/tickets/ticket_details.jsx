@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
 import moment from "moment";
 import Spinner from "../common/spinner";
+import { ReconciliationContext } from "../reconciliation";
 
 // const tickets = [
 //   {
@@ -151,28 +151,28 @@ const Header = styled.div`
   margin-top: 28px;
 `;
 
-const TicketDetails = connect(state => ({ 
-  data: state.ticketsPanel.data,
-  selectedItem: state.ticketsPanel.selectedItem,
-  selectedMaterial: state.ticketsPanel.selectedMaterial,
-  selectedFilter: state.ticketsPanel.selectedFilter
-}))(
-  ({ selectedItem, selectedMaterial,  selectedFilter, data: { loading, tickets } } ) => {
-    return (<div className="w-100">
-      <Header> 
-        <i className="mr-2 fa fa-bookmark"></i>
+const TicketDetails =  () => {
+  const [{
+    ticketsPanel
+  }] = useContext(ReconciliationContext);
+
+  const { data: { loading, tickets }, selectedItem, selectedMaterial, selectedFilter } = ticketsPanel;
+
+  return (<div className="w-100">
+    <Header> 
+      <i className="mr-2 fa fa-bookmark"></i>
       Tickets for {selectedItem? selectedItem : selectedMaterial}
-      </Header>
-      <FieldTitle>
-        {selectedFilter}
-      </FieldTitle>
-      {loading && <div className="d-flex align-items-center justify-content-center mt-5">
-        <Spinner/>
-      </div>}
-      {tickets.map((ticket, index) => (<div key={index}>
-        <TicketCard {...ticket} />
-      </div>))}
-    </div>);
-  }); 
+    </Header>
+    <FieldTitle>
+      {selectedFilter}
+    </FieldTitle>
+    {loading && <div className="d-flex align-items-center justify-content-center mt-5">
+      <Spinner/>
+    </div>}
+    {tickets.map((ticket, index) => (<div key={index}>
+      <TicketCard {...ticket} />
+    </div>))}
+  </div>);
+}; 
 
 export default TicketDetails;

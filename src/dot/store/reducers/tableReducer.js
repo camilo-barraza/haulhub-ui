@@ -1,19 +1,13 @@
+import { REQUEST, SUCCESS, FAILURE } from "../utils";
+
 export const tables = {
   reconciliation:{
-    LOAD_TABLE_FIRST_PAGE_REQUEST: "LOAD_RECONCILIATION_FIRST_PAGE_REQUEST",
-    LOAD_TABLE_FIRST_PAGE_SUCCESS: "LOAD_RECONCILIATION_FIRST_PAGE_SUCCESS",
-    LOAD_TABLE_FIRST_PAGE_FAILURE: "LOAD_RECONCILIATION_FIRST_PAGE_FAILURE",
-    LOAD_TABLE_PAGE_REQUEST: "LOAD_RECONCILIATION_PAGE_REQUEST",
-    LOAD_TABLE_PAGE_SUCCESS: "LOAD_RECONCILIATION_PAGE_SUCCESS",
-    LOAD_TABLE_PAGE_FAILURE: "LOAD_RECONCILIATION_PAGE_FAILURE",
+    GET_TABLE_FIRST_PAGE: "GET_RECONCILIATION_TABLE_FIRST_PAGE",
+    GET_TABLE_PAGE: "GET_RECONCILIATION_TABLE_PAGE",
   },
   materials:{
-    LOAD_TABLE_FIRST_PAGE_REQUEST: "LOAD_MATERIALS_FIRST_PAGE_REQUEST",
-    LOAD_TABLE_FIRST_PAGE_SUCCESS: "LOAD_MATERIALS_FIRST_PAGE_SUCCESS",
-    LOAD_TABLE_FIRST_PAGE_FAILURE: "LOAD_MATERIALS_FIRST_PAGE_FAILURE",
-    LOAD_TABLE_PAGE_REQUEST: "LOAD_MATERIALS_PAGE_REQUEST",
-    LOAD_TABLE_PAGE_SUCCESS: "LOAD_MATERIALS_PAGE_SUCCESS",
-    LOAD_TABLE_PAGE_FAILURE: "LOAD_MATERIALS_PAGE_FAILURE",
+    GET_TABLE_FIRST_PAGE: "GET_MATERIALS_TABLE_FIRST_PAGE",
+    GET_TABLE_PAGE: "GET_MATERIALS_TABLE_PAGE"
   }
 };
 
@@ -29,7 +23,7 @@ export default (state = initialState, action, tableType) => {
   state = {...state, tableType};
   switch (action.type) {
   // --------------- First page ----------------------
-  case tables[tableType].LOAD_TABLE_FIRST_PAGE_REQUEST:
+  case `${tables[tableType].GET_TABLE_FIRST_PAGE}_${REQUEST}`:
     return {
       ...state,
       loading: true,
@@ -37,33 +31,33 @@ export default (state = initialState, action, tableType) => {
       loadedLastPage: false,
       data: []
     };
-  case tables[tableType].LOAD_TABLE_FIRST_PAGE_SUCCESS:
+  case `${tables[tableType].GET_TABLE_FIRST_PAGE}_${SUCCESS}`:
     return {
       ...state,
       loading: false,
-      totalPages: action.response.data.totalPages,
-      data: action.response.data.payload
+      totalPages: action.payload.data.totalPages,
+      data: action.payload.data.payload
     };
-  case tables[tableType].LOAD_TABLE_FIRST_PAGE_FAILURE:
+  case `${tables[tableType].GET_TABLE_FIRST_PAGE}_${FAILURE}`:
     return {
       ...state,
       loading: false
     };
   // --------------- Next pages ----------------------
-  case tables[tableType].LOAD_TABLE_PAGE_REQUEST:
+  case `${tables[tableType].GET_TABLE_PAGE}_${REQUEST}`:
     return {
       ...state,
       currentPage: state.currentPage + 1,
       loading: true,
     };
-  case tables[tableType].LOAD_TABLE_PAGE_SUCCESS:
+  case `${tables[tableType].GET_TABLE_PAGE}_${SUCCESS}`:
     return {
       ...state,
       loading: false,
       loadedLastPage: state.totalPages === state.currentPage,
-      data: [...state.data, ...action.response.data]
+      data: [...state.data, ...action.payload.data]
     };
-  case tables[tableType].LOAD_TABLE_PAGE_FAILURE:
+  case `${tables[tableType].GET_TABLE_PAGE}_${FAILURE}`:
     return {
       ...state,
       currentPage: state.currentPage-1,

@@ -20,6 +20,7 @@ module.exports = {
     "react"
   ],
   "rules": {
+    "no-empty-pattern": "off",
     "no-debugger": "off",
     "no-console": "off",
     "undefined": "off",

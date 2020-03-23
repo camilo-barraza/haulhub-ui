@@ -1,9 +1,9 @@
+import { REQUEST, SUCCESS, FAILURE } from "../utils";
+
 export const OPEN_TICKETS_PANEL = "OPEN_TICKETS_PANEL";
 export const CLOSE_TICKETS_PANEL = "CLOSE_TICKETS_PANEL";
 
-export const LOAD_TICKETS_REQUEST = "LOAD_TICKETS_REQUEST";
-export const LOAD_TICKETS_SUCCESS = "LOAD_TICKETS_SUCCESS";
-export const LOAD_TICKETS_FAILURE = "LOAD_TICKETS_FAILURE";
+export const GET_TICKETS = "GET_TIKCETS";
 
 export default (state = {
   isOpen: false,
@@ -32,7 +32,7 @@ export default (state = {
       selectedMaterial: "",
       isOpen: false
     };
-  case LOAD_TICKETS_REQUEST:
+  case `${GET_TICKETS}_${REQUEST}`:
     return {
       ...state,
       data: {
@@ -40,15 +40,15 @@ export default (state = {
         loading: true
       }
     };
-  case LOAD_TICKETS_SUCCESS:
+  case `${GET_TICKETS}_${SUCCESS}`:
     return {
       ...state,
       data: {
-        tickets: action.response.data,
+        tickets: action.payload.data,
         loading: false
       }
     };
-  case LOAD_TICKETS_FAILURE:
+  case `${GET_TICKETS}_${FAILURE}`:
     return {
       ...state,
       data: {
