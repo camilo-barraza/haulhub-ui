@@ -9,8 +9,10 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import "./App.css";
 import Test from "./test/test";
+import Test3 from "./test/test3";
+import Test4 from "./test/test4";
 
-ReactDOM.render(<Test></Test>, document.getElementById("root"));
+ReactDOM.render(<Test4></Test4>, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
