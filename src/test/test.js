@@ -17,7 +17,6 @@ const themes = {
   }
 };
 
-export const ThemeContext = React.createContext();
 const TestContext = React.createContext();
 
 const dispatchAPIActions = async (dispatch, actionName, method, url) => {
@@ -74,6 +73,8 @@ export const useThemeStore = () => {
     updateTesting
   }];
 };
+
+export const ThemeContext = React.createContext();
 
 export default function App() {
   const [date, setDate] = useState("algo");
