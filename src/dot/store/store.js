@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer } from "react";
 import rootReducer from "./reducers/root";
 import { selectProject, loadProjects } from "./actions/projectSelectorActions";
 import { loadMaterialOptions, loadTableFirstPage, loadTablePage } from "./actions/tableActions";
