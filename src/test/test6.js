@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-const Flash = ({ children }) => {
+const FlashContent = ({ children }) => {
   const [{
     isOpen,
     message,
@@ -31,7 +31,6 @@ const Flash = ({ children }) => {
   </div>);
 };
 
-
 const useFlashStore = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [severity, setSeverity] = useState("success");
@@ -50,15 +49,22 @@ const useFlashStore = () => {
   return [{ isOpen, message, severity }, { showFlash, hideFlash }];
 };
 
-
 export const Context = React.createContext();
 
-const App = () => {
+export const Flash = ({ children }) => {
   return (<Context.Provider value={useFlashStore()}>
-    <Flash>
-      <Test></Test>
-    </Flash>
+    <FlashContent>
+      {children}
+    </FlashContent>
   </Context.Provider>);
+};
+
+
+
+const App = () => {
+  return (<Flash>
+    <Test></Test>
+  </Flash>);
 }; 
 
 const Test = () => {
