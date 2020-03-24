@@ -32,7 +32,6 @@ const FlashProvider = ({ children, onDispatch }) => {
     message: "",
     severity: "success"
   });
-  const [test, setTest] = useState("testing");
   const { isOpen, message, severity } = state;
 
   const showFlash = (payload) => {
@@ -40,7 +39,7 @@ const FlashProvider = ({ children, onDispatch }) => {
   };
 
   return (
-    <FlashContext.Provider value={{ state: {...state, test}, dispatch, showFlash, setTest }}>
+    <FlashContext.Provider value={{ state, dispatch, showFlash, setTest }}>
       {children}
     </FlashContext.Provider>
   );
