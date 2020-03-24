@@ -2,6 +2,7 @@ import React, { useContext, useReducer, useEffect, useState } from "react";
 import { FiltersContext, useFilters, FiltersProvider } from "./FiltersContext";
 
 import ContextDevTool from "react-context-devtool";
+import Test2 from "./test2";
 
 const themes = {
   light: {
@@ -16,7 +17,7 @@ const themes = {
   }
 };
 
-const ThemeContext = React.createContext();
+export const ThemeContext = React.createContext();
 const TestContext = React.createContext();
 
 const dispatchAPIActions = async (dispatch, actionName, method, url) => {
@@ -55,7 +56,7 @@ const toggleTheme = (dispatch) => {
   };
 };
 
-const useThemeStore = () => {
+export const useThemeStore = () => {
   const [theme, dispatch] = useReducer(themeReducer, themes.dark);
   const [testing, setTesting] = useState("initial");
 
@@ -86,6 +87,7 @@ export default function App() {
   return (
     <ThemeContext.Provider value={useThemeStore()}>
       {date}
+      <Test2></Test2>
       <FiltersProvider date={date} onDispatch={onDispatch}>
         <ContextDevTool context={ThemeContext} id="3fdsfdsfsadfs" displayName="ThemeContext" />
         {/* <ContextDevTool context={FiltersProvider} id="filters" displayName="FiltersContext" /> */}
