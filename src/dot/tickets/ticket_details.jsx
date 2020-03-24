@@ -153,10 +153,8 @@ const Header = styled.div`
 
 const TicketDetails =  () => {
   const [{
-    ticketsPanel
+    ticketsPanel: { data: { loading, tickets }, selectedItem, selectedMaterial, selectedFilter }
   }] = useContext(ReconciliationContext);
-
-  const { data: { loading, tickets }, selectedItem, selectedMaterial, selectedFilter } = ticketsPanel;
 
   return (<div className="w-100">
     <Header> 

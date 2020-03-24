@@ -233,13 +233,12 @@ const ticketFilters = {
 
 const Row = (props) => {
   const [{
-    ticketsPanel
+    ticketsPanel: { selectedFilter, selectedItem }
   },
   {
     openTicketsPanel
   }] = useContext(ReconciliationContext);
 
-  const { selectedFilter, selectedItem } = ticketsPanel;
   const { item } = props;
 
   return (<div>
@@ -287,18 +286,14 @@ const Row = (props) => {
 
 export default () => {
   const [{
-    projectSelector,
-    ticketsPanel,
-    reconciliationTable
+    projectSelector: { selectedProject },
+    ticketsPanel: { isOpen: isTicketsPanelOpen },
+    reconciliationTable: { loading: loadingData, loadedLastPage, tableType, data }
   },
   {
     loadTableFirstPage,
     loadTablePage
   }] = useContext(ReconciliationContext);
-
-  const { selectedProject } = projectSelector;
-  const { loading: loadingData, loadedLastPage, tableType, data } = reconciliationTable;
-  const { isOpen: isTicketsPanelOpen } = ticketsPanel;
 
   const [scrollbarWidth, setScrollbarWidth] = useState(0);
 

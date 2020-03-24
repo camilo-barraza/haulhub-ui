@@ -65,15 +65,12 @@ const MATERIALS_FILTER = "MATERIALS_FILTER";
 
 const Row  = (props) => {
   const [{
-    ticketsPanel,
-    materials
+    ticketsPanel: { selectedFilter, selectedMaterial },
+    materials: { menuOptions: { loading: loadingMenuOptions, data: menuOptions } }
   },
   {
     openTicketsPanel
   }] = useContext(ReconciliationContext);
-
-  const { selectedFilter, selectedMaterial } = ticketsPanel;
-  const { menuOptions: { loading: loadingMenuOptions, data: menuOptions } } = materials;
 
   const { item, material } = props; 
   const [selectedMenuItem, setSelectedMenuItem] = useState(props.item);
@@ -131,16 +128,13 @@ export default () => {
   const [scrollbarWidth, setScrollbarWidth] = useState(0);
 
   const [{
-    projectSelector,
-    materials,
+    projectSelector: { selectedProject },
+    materials: { table: { loading: loadingData, loadedLastPage, tableType, data } },
   },
   {
     loadTableFirstPage,
     loadTablePage,
   }] = useContext(ReconciliationContext);
-
-  const { selectedProject } = projectSelector;
-  const { table: { loading: loadingData, loadedLastPage, tableType, data } } = materials;
 
   useEffect(() => {
     if (selectedProject !== "")

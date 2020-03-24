@@ -85,13 +85,7 @@ const CloseIcon = styled.div`
 `;
 
 export default ({ isOpen }) => {
-  const [{
-    ticketsPanel
-  },
-  {
-    closeTicketsPanel
-  }] = useContext(ReconciliationContext);
-
+  const [{}, { closeTicketsPanel }] = useContext(ReconciliationContext);
 
   React.useEffect(() => {
     if (isOpen)

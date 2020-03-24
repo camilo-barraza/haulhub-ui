@@ -98,19 +98,15 @@ var sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
 const Reconciliation = () => {
   const [{
-    projectSelector,
-    reconciliationTable,
-    materials,
+    projectSelector: { menuOptions, loading: loadingProjects, selectedProject },
+    reconciliationTable: { loading: isReconciliationTableLoading },
+    materials: { table: { loading: isMaterialsTableLoading } },
   },
   {
     loadMaterialOptions,
     selectProject,
     loadProjects
   }] = useContext(ReconciliationContext);
-
-  const { menuOptions, loading: loadingProjects, selectedProject } = projectSelector;
-  const { loading:isReconciliationTableLoading } = reconciliationTable;
-  const { table: { loading: isMaterialsTableLoading } } = materials;
 
   const [loadingProjectDetails, setLoadingProjectDetails] = useState(false);
   const [projectDetails, setProjectDetails] = useState({});
@@ -209,7 +205,6 @@ const ReconciliationPage = () => {
   return (<ReconciliationContext.Provider value={useStore()}>
     <ContextDevTool context={ReconciliationContext} id="unique-id" displayName="ReconciliationContext" />
     <Reconciliation />
-    <div>hey</div>
   </ReconciliationContext.Provider>);
 };
 
